@@ -13,18 +13,18 @@ PNG* setupOutput(unsigned w, unsigned h) {
 
 // Returns my favorite color
 HSLAPixel* myFavoriteColor(double saturation) {
-    HSLAPixel pixel(-1, saturation, 0.5);
+    HSLAPixel pixel(115, saturation, 0.5);
     return &pixel;
 }
 
 void sketchify(std::string inputFile, std::string outputFile) {
     // Load in.png
     PNG* original = NULL;
-
-    original->readFromFile(inputFile);
+    cout << "Reached line 23" << endl;
+    original=readFromFile(inputFile);
     unsigned width = original->width();
     unsigned height = original->height();
-
+    cout << "Reached line 27" << endl;
     // Create out.png
     PNG* output;
     setupOutput(width, height);
