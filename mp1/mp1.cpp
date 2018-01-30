@@ -30,31 +30,55 @@ void rotate(std::string inputFile, std::string outputFile) {
 
 PNG myArt(unsigned int width, unsigned int height) {
   PNG png(width, height);
-  /*for(unsigned int x = 0; x < (width/3); x++){
-    for(unsigned int y = 0; y < (height); y++){
-      png[x, y]->h=0;
-      png[x, y]->s=1;
-      png[x, y]->l=0.5;
-      png[x, y]->a=1;
+  for(unsigned int x = 0; x < (width); x++){
+    for(unsigned int y = 0; y < (height/2); y++){
+      HSLAPixel *my = png.getPixel(x, y);
+      my->h=120;
+      my->s=1;
+      my->l=0.5;
+      my->a=1;
     }
   }
-  for(unsigned int x = (width/3); x < (2*width/3); x++){
-    for(unsigned int y = 0; y < (height); y++){
-      png[x, y]->h=120;
-      png[x, y]->s=1;
-      png[x, y]->l=0.5;
-      png[x, y]->a=1;
+  for(unsigned int x = 0; x < (width); x++){
+    for(unsigned int y = (height/2); y < (height); y++){
+      HSLAPixel *my = png.getPixel(x, y);
+      my->h=240;
+      my->s=1;
+      my->l=0.5;
+      my->a=1;
     }
   }
-  for(unsigned int x = (2*width); x < width; x++){
-    for(unsigned int y = 0; y < (height); y++){
-      png[x, y]->h=240;
-      png[x, y]->s=1;
-      png[x, y]->l=0.5;
-      png[x, y]->a=1;
-    }
-  }*/
-
-
+  for(unsigned int x = 0; x < width; x++){
+    /*for(unsigned int y = (height/2); y < (height); y++){*/
+      HSLAPixel *my = png.getPixel(x, x);
+      my->h=0;
+      my->s=1;
+      my->l=0.5;
+      my->a=1;
+  }
+  for(unsigned int x = 0; x < width; x++){
+    /*for(unsigned int y = (height/2); y < (height); y++){*/
+      HSLAPixel *my = png.getPixel(x, height-x-1);
+      my->h=0;
+      my->s=1;
+      my->l=0.5;
+      my->a=1;
+  }
+  for(unsigned int x = 0; x < width; x++){
+    /*for(unsigned int y = (height/2); y < (height); y++){*/
+      HSLAPixel *my = png.getPixel(x, height/2);
+      my->h=0;
+      my->s=1;
+      my->l=0.5;
+      my->a=1;
+  }
+  for(unsigned int x = 0; x < width; x++){
+    /*for(unsigned int y = (height/2); y < (height); y++){*/
+      HSLAPixel *my = png.getPixel(width/2, x);
+      my->h=0;
+      my->s=1;
+      my->l=0.5;
+      my->a=1;
+  }
   return png;
 }
