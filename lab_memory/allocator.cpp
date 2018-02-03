@@ -47,19 +47,20 @@ void Allocator::loadRooms(const string& file)
 {
     // Read in rooms
     fileio::loadRooms(file);
+    roomCount = fileio::getNumRooms();
     rooms = new Room[roomCount];
 
     totalCapacity = 0;
     int i = 0;
     while (fileio::areMoreRooms()) {
-        i++;
         rooms[i] = fileio::nextRoom();
         totalCapacity += rooms[i].capacity;
+        i++;
     }
 }
 
 
-void Allocator::printStudents(std::ostream & stream /* = std::cout */)
+void Allocator::printStudents(std::ostream& stream)
 {
     // Output number of each last letter name
     stream << "Student counts (" << studentCount << " total)" << endl;
@@ -79,7 +80,7 @@ void Allocator::allocate()
     }
 }
 
-void Allocator::printRooms(std::ostream & stream /* = std::cout */)
+void Allocator::printRooms(std::ostream& stream)
 {
     // Output the allocation
     stream << "Room Allocation (" << studentCount << "/" << totalCapacity << ")"
@@ -120,4 +121,9 @@ Room* Allocator::largestOpening()
         }
     }
     return &rooms[index];
+}
+
+Allocator:: ~Allocator(){
+  delete[] rooms;
+  delete[] alpha;
 }
