@@ -135,7 +135,7 @@ void Image:: scale(double factor){
 
         HSLAPixel& pix=this->getPixel(i,j);
         HSLAPixel& pix2=this->getPixel(i/factor, j/factor);
-        pix=pix2
+        pix=pix2;
 
       }
     }
