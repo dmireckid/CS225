@@ -113,29 +113,43 @@ void Image:: illinify(){
 }
 
 void Image:: scale(double factor){
+  int neww = (this->width())*factor;
+  int newh = (this->height())*factor;
+  if(factor>1){
+    this->resize(neww, newh);
+    for(int i=neww-1; i>=0; i--){
+      for(int j=newh-1; j>=0; j--){
 
+        HSLAPixel& pix=this->getPixel(i,j);
+        HSLAPixel& pix2=this->getPixel(i/factor, j/factor);
+        pix=pix2;
+
+      }
+    }
+    //this->resize(neww, newh);
+  }
+  else if(factor<1){
+    //this->resize(neww, newh);
+    for(int i=0; i<neww; i++){
+      for(int j=0; j<newh; j++){
+
+        HSLAPixel& pix=this->getPixel(i,j);
+        HSLAPixel& pix2=this->getPixel(i/factor, j/factor);
+        pix=pix2
+
+      }
+    }
+    this->resize(neww, newh);
+  }
 }
 
 void Image:: scale(unsigned w, unsigned h){
-  HSLAPixel * newImageData = new HSLAPixel[w * h];
-
-  // Copy the current data to the new image data, using the existing pixel
-  // for coordinates within the bounds of the old image size
-  for (unsigned x = 0; x < w; x++) {
-    for (unsigned y = 0; y < h; y++) {
-      if (x < this->width() && y < this->height()) {
-        HSLAPixel & oldPixel = this->getPixel(x, y);
-        HSLAPixel & newPixel = newImageData[ (x + (y * w)) ];
-        newPixel = oldPixel;
-      }
-    }
+  double factor;
+  if((w/this->width()) > (h/this->height())){
+    factor = (h/this->height());
   }
-
-  // Clear the existing image
-  delete[] imageData_;
-
-  // Update the image to reflect the new image size and data
-  width_ = w;
-  height_ = h;
-  imageData_ = newImageData;
+  else{
+    factor = (w/this->width());
+  }
+  this->scale(factor);
 }
