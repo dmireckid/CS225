@@ -58,9 +58,22 @@ T sum(stack<T>& s)
  */
 bool isBalanced(queue<char> input)
 {
+    stack<char> s;
+    /*
+    int right=0, left=0;
+    for(int i=0; i<input.size(); i++){
+      if(input.pop().equals("[") || input.pop() == ']'){
+        s.push(input.pop());
+      }
+      else{
+        input.pop();
+      }
+    }
 
-    //for(int i=0; i<int(input.size()); i++){
-
+    for(int j=0; j<s.size(); j++){
+      if()
+    }
+    */
     return true;
 }
 
