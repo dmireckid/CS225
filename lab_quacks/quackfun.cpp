@@ -26,15 +26,24 @@ template <typename T>
 T sum(stack<T>& s)
 {
 
-    // Your code here
-    return T(); // stub return value (0 for primitive types). Change this!
+    T temp = s.top();
+    s.pop();
+    if(s.empty()){
+      s.push(temp);
+      return temp;
+    }
+    else{
+      T sum2 = sum(s);
+      s.push(temp);
+      return temp+sum2;
+    }            // stub return value (0 for primitive types). Change this!
                 // Note: T() is the default value for objects, and 0 for
                 // primitive types
 }
 
 /**
- * Checks whether the given string (stored in a queue) has balanced brackets. 
- * A string will consist of 
+ * Checks whether the given string (stored in a queue) has balanced brackets.
+ * A string will consist of
  * square bracket characters, [, ], and other characters. This function will return
  * true if and only if the square bracket characters in the given
  * string are balanced. For this to be true,
@@ -50,7 +59,8 @@ T sum(stack<T>& s)
 bool isBalanced(queue<char> input)
 {
 
-    // @TODO: Make less optimistic
+    //for(int i=0; i<int(input.size()); i++){
+
     return true;
 }
 
@@ -69,11 +79,40 @@ bool isBalanced(queue<char> input)
 template <typename T>
 void scramble(queue<T>& q)
 {
-    stack<T> s;
-    // optional: queue<T> q2;
+  stack<T> s;
+  int x=1, y=0, size=int(q.size()), min=0;
 
-    // Your code here
-}
+  while(y < size){
+    if(x%2 == 1){
+      min = x;
+      if(min > size - y){
+        min = size - y;
+      }
+      for(int i=0; i<min; i++){
+        q.push(q.front());
+        q.pop();
+      }
+      y = y + min;
+      x++;
+    }
+    else{
+      min = x;
+      if(min > size - y){
+        min = size - y;
+      }
+      for(int i=0; i<min; i++){
+          s.push(q.front());
+          q.pop();
+      }
+      for(int j=0; j<min; j++){
+          q.push(s.top());
+          s.pop();
+      }
+      y = y + min;
+      x++;
+      }
+    }
+  }
 
 /**
  * @return true if the parameter stack and queue contain only elements of
@@ -94,12 +133,24 @@ template <typename T>
 bool verifySame(stack<T>& s, queue<T>& q)
 {
     bool retval = true; // optional
-    // T temp1; // rename me
-    // T temp2; // rename :)
 
-    // Your code here
 
-    return retval;
+    if(s.empty()){    //base case
+      return true;
+    }
+    T temp1 = s.top(); // rename me = no, i like the name
+    //top of the stack stored in temp1
+    s.pop();  //pop off the top of the stack
+    retval=verifySame(s, q);  //recurse
+    T temp2 = q.front(); // rename :)
+    //front of the queue stored in temp2
+    retval=(retval&&(temp1==temp2)); //only true if top of stack
+    //is equal to front of queue in all recursions
+    q.push(temp2);  //push first queue item to end
+    q.pop();        //pop off first value, its okay tho, its stored at the end
+    s.push(temp1);  //restore the stack
+
+    return retval;  //finally, verify that its the same or not
 }
 
 }
