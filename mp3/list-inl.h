@@ -26,7 +26,7 @@ void List<T>::clear() {
   }
   length_ = 0;
   tail_ = NULL;
-
+  head_ = NULL;
 }
 
 /**
@@ -50,7 +50,7 @@ void List<T>::insertFront(T const & ndata) {
     tail_ = head_;
   }
   length_ += 1;
-  delete temp;
+  //delete temp;
   temp = NULL;
 }
 
@@ -75,7 +75,7 @@ void List<T>::insertBack(const T & ndata) {
     tail_ = head_;
   }
   length_ += 1;
-  delete temp;
+  //delete temp;
   temp=NULL;
 }
 
@@ -100,7 +100,36 @@ void List<T>::reverse() {
  */
 template <class T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
-  /// @todo Graded in MP3.1
+  if(!startPoint || !endPoint || startPoint==endPoint){
+    return;
+  }
+  ListNode *tempStart=startPoint;
+  ListNode *tempPrev=startPoint->prev;
+  ListNode *tempEnd=endPoint;
+  ListNode *tempNext=endPoint->next;
+  while(startPoint != endPoint){
+    ListNode* temp = startPoint->prev;
+    startPoint->prev = startPoint->next;
+    startPoint->next = temp;
+    startPoint = startPoint->prev;
+  }
+  ListNode* temp2 = startPoint->prev;
+  startPoint->prev = tempPrev;
+  startPoint->next = temp2;
+  endPoint = tempStart;
+  endPoint->next = tempNext;
+  if(tempPrev){
+    tempStart = startPoint;
+  }
+  else{
+    head_ = startPoint;
+  }
+  if(tempNext){
+    tempEnd = endPoint;
+  }
+  else{
+    tail_ = endPoint;
+  }
 }
 
 /**
@@ -111,7 +140,26 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
  */
 template <class T>
 void List<T>::reverseNth(int n) {
-  /// @todo Graded in MP3.1
+  if(head_ == NULL){
+    return;
+  }
+  if(n > length_){
+    n = length_;
+  }
+  ListNode* start = head_;
+  ListNode* end = head_;
+  while(end->next && start->next){
+    end=start;
+    for(int i=0; i < (n-1); i++){
+      if(end->next){
+        end = end->next;
+      }
+    }     //rant: this should be working and i have no clue
+          //why the f*ck not, like bruhhhhhhhhhhhhhh
+          //end rant
+    reverse(*&start, *&end);
+    start = end->next;
+  }
 }
 
 /**
@@ -125,7 +173,22 @@ void List<T>::reverseNth(int n) {
  */
 template <class T>
 void List<T>::waterfall() {
-  /// @todo Graded in MP3.1
+  if(!head_ || !head_->next){
+    return;
+  }
+  ListNode* temp = head_;
+  ListNode* tempn = head_->next;
+  while(temp->next && temp->next->next){
+    temp = temp->next;
+    temp->prev->next = temp->next;
+    temp->next->prev = temp->prev;
+    tempn = temp->next;
+    tail_->next = temp;
+    temp->prev = tail_;
+    temp->next = NULL;
+    tail_ = temp;
+    temp = tempn;
+  }
 }
 
 /**
