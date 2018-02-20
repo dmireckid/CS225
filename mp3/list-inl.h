@@ -9,7 +9,7 @@
  */
 template <class T>
 List<T>::~List() {
-  /// @todo Graded in MP3.1
+  clear();
 }
 
 /**
@@ -18,7 +18,15 @@ List<T>::~List() {
  */
 template <class T>
 void List<T>::clear() {
-  /// @todo Graded in MP3.1
+  ListNode* temp = head_;
+  while(temp != NULL){
+    temp = temp->next;
+    delete head_;
+    head_ = temp;
+  }
+  length_ = 0;
+  tail_ = NULL;
+
 }
 
 /**
@@ -29,7 +37,21 @@ void List<T>::clear() {
  */
 template <class T>
 void List<T>::insertFront(T const & ndata) {
-  /// @todo Graded in MP3.1
+  ListNode* temp = new ListNode(ndata);
+  if(head_ != NULL){
+    temp->next = head_;
+    head_->prev = temp;
+    head_ = temp;
+  }
+  else{
+    temp->next = NULL;
+    temp->prev = NULL;
+    head_ = temp;
+    tail_ = head_;
+  }
+  length_ += 1;
+  delete temp;
+  temp = NULL;
 }
 
 /**
@@ -40,7 +62,21 @@ void List<T>::insertFront(T const & ndata) {
  */
 template <class T>
 void List<T>::insertBack(const T & ndata) {
-  /// @todo Graded in MP3.1
+  ListNode* temp = new ListNode(ndata);
+  if(tail_ != NULL){
+    temp->prev = tail_;
+    tail_->next = temp;
+    tail_ = temp;
+  }
+  else{
+    temp->next = NULL;
+    temp->prev = NULL;
+    head_ = temp;
+    tail_ = head_;
+  }
+  length_ += 1;
+  delete temp;
+  temp=NULL;
 }
 
 /**
