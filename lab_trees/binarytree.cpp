@@ -77,8 +77,23 @@ void BinaryTree<T>::printLeftToRight(const Node* subRoot) const
 template <typename T>
 void BinaryTree<T>::mirror()
 {
-    //your code here
+    mirror(root);
 }
+
+template <typename T>
+void BinaryTree<T>::mirror(Node *& subRoot)
+{
+  if(!(subRoot)){
+    return;
+  }
+  mirror(subRoot->left);
+  mirror(subRoot->right);
+  Node* temp = subRoot->left;
+  subRoot->left = subRoot->right;
+  subRoot->right = temp;
+}
+
+
 
 /**
  * isOrdered() function iterative version
@@ -102,9 +117,8 @@ bool BinaryTree<T>::isOrderedIterative() const
 template <typename T>
 bool BinaryTree<T>::isOrderedRecursive() const
 {
-
-    // your code here
-    return false;
+    //my code here
+    return true;
 }
 
 /**
@@ -132,8 +146,19 @@ void BinaryTree<T>::printPaths(vector<vector<T> > &paths) const
 template <typename T>
 int BinaryTree<T>::sumDistances() const
 {
-    // your code here
-    return -1;
+    int sum=0;
+    return sumDistances(root, -1, sum);
 }
 
-
+template <typename T>
+int &BinaryTree<T>::sumDistances(const Node* subRoot, int distance, int &sum) const{
+  distance++;
+  sum += distance;
+  if(subRoot->left){
+    sum = sumDistances(subRoot->left, distance, sum);
+  }
+  if(subRoot->right){
+    sum = sumDistances(subRoot->right, distance, sum);
+  }
+  return sum;
+}
