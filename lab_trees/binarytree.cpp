@@ -101,12 +101,22 @@ void BinaryTree<T>::mirror(Node *& subRoot)
  *  nondecreasing list output values, and false otherwise. This is also the
  *  criterion for a binary tree to be a binary search tree.
  */
-template <typename T>
-bool BinaryTree<T>::isOrderedIterative() const
-{
-    // your code here
-    return false;
-}
+ template <typename T>
+ bool BinaryTree<T>::isOrderedIterative() const
+ {
+   /*T temp = iot.begin() -> elem;
+   InorderTraversal<T> iot(root);
+   for (TreeTraversal<int>::Iterator it = iot.begin(); it != iot.end(); ++it) {
+     if(temp > (*it)->elem){
+       return false;
+     }
+     else{
+       temp = (*it)->elem;
+     }
+   }
+   */
+     return true;
+ }
 
 /**
  * isOrdered() function recursive version
@@ -117,10 +127,52 @@ bool BinaryTree<T>::isOrderedIterative() const
 template <typename T>
 bool BinaryTree<T>::isOrderedRecursive() const
 {
-    //my code here
-    return true;
+  return isOrderedRecursive(root);
 }
 
+template <typename T>
+bool BinaryTree<T>::isOrderedRecursive(const Node* subRoot) const{
+  bool left = false;
+  bool right = false;
+  int leftval = 0;
+  int rightval = 0;
+  const Node* temp = subRoot;
+  if(!(subRoot)){
+    return true;
+  }
+  if(subRoot->left){
+    left = isOrderedRecursive(subRoot->left);
+    temp = subRoot->left;
+    rightval = temp->elem;
+    while(temp->right){
+      temp=temp->right;
+      rightval = temp->elem;
+    }
+  }
+  else{
+      left = true;
+      rightval = subRoot->elem;
+  }
+  if(subRoot->right){
+    right = isOrderedRecursive(subRoot->right);
+    temp = subRoot->right;
+    leftval = temp->elem;
+    while(temp->left){
+      temp = temp->left;
+      leftval = temp->elem;
+    }
+  }
+  else{
+    right = true;
+    left = subRoot->elem;
+  }
+  if(left && right && (leftval >= subRoot->elem) && (rightval <= subRoot->elem)) {
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 /**
  * creates vectors of all the possible paths from the root of the tree to any leaf
  * node and adds it to another vector.

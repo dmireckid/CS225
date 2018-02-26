@@ -214,7 +214,7 @@ class BinaryTree
     void mirror(Node *& subRoot);
     //mirror helper fn
 
-    bool isOrderedIterative(const Node* subRoot) const;
+    //bool isOrderedIterative(const Node* subRoot) const;
     //isOrderedIterative helper fn
 
     bool isOrderedRecursive(const Node* subRoot) const;
