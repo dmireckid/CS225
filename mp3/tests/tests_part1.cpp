@@ -40,6 +40,24 @@ TEST_CASE("List::reverse", "[weight=1][part=1]") {
   REQUIRE( out == expected );
 }
 
+/*TEST_CASE("List::reverseNth #0", "[weight=1][part=1]") {
+  List<int> list;
+  list.insertFront(5);
+  list.insertFront(4);
+  list.insertFront(3);
+  list.insertFront(2);
+  list.insertFront(1);
+  list.print(cout);
+  list.reverseNth(3);
+  List<int> expected;
+  expected.insertFront(4);
+  expected.insertFront(5);
+  expected.insertFront(1);
+  expected.insertFront(2);
+  expected.insertFront(3);
+  expected.print(cout);
+}*/
+
 TEST_CASE("List::reverseNth #1", "[weight=1][part=1]") {
   PNG in;        in.readFromFile("tests/alma.png");
   PNG expected;  expected.readFromFile("tests/expected-reserveN_1.png");

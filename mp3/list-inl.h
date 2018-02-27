@@ -75,7 +75,6 @@ void List<T>::insertBack(const T & ndata) {
     tail_ = head_;
   }
   length_ += 1;
-  //delete temp;
   temp=NULL;
 }
 
@@ -107,15 +106,16 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   ListNode *tempPrev=startPoint->prev;
   ListNode *tempEnd=endPoint;
   ListNode *tempNext=endPoint->next;
+  ListNode *temp = NULL;
   while(startPoint != endPoint){
-    ListNode* temp = startPoint->prev;
+    temp = startPoint->prev;
     startPoint->prev = startPoint->next;
     startPoint->next = temp;
     startPoint = startPoint->prev;
   }
-  ListNode* temp2 = startPoint->prev;
+  temp = startPoint->prev;
   startPoint->prev = tempPrev;
-  startPoint->next = temp2;
+  startPoint->next = temp;
   endPoint = tempStart;
   endPoint->next = tempNext;
   if(tempPrev){
@@ -146,6 +146,7 @@ void List<T>::reverseNth(int n) {
   ListNode* start = head_;
   ListNode* end = head_;
   while(start->next && end->next){
+    //cout << "beginning" << endl;
     end=start;
     for(int i=0; i < (n-1); i++){
       if(end->next){
@@ -154,8 +155,14 @@ void List<T>::reverseNth(int n) {
     }     //rant: this should be working and i have no clue
           //why the f*ck not, like bruhhhhhhhhhhhhhh
           //end rant
+    //cout << "pre reverse" << endl;
     reverse(start, end);
+    //cout << "post reverse" << endl;
     start = end->next;
+    //cout << "wat" << endl;
+    if(!start){
+      return;
+    }
   }
 }
 
