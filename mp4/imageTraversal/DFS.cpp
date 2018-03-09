@@ -17,8 +17,21 @@
  * @param tolerance If the current point is too different (difference larger than tolerance) with the start point,
  * it will not be included in this DFS
  */
-DFS::DFS(const PNG & png, const Point & start, double tolerance) {  
-  /** @todo [Part 1] */
+DFS::DFS(const PNG & png, const Point & start, double tolerance) {
+  width_ = png.width();
+  height_ = png.height();
+  visited = new int*[width_];
+  for(unsigned int i=0; i<width_; i++){
+    visited[i] = new int[height_];
+    for(unsigned int j=0; j<width_; j++){
+      visited[i][j] = 0;
+    }
+  }
+  start_ = start;
+  tolerance_ = tolerance;
+  DFStack.push(start);
+
+  //REMINDER: DELETE THE GODDAMN FUCKING VISITED ARRAY
 }
 
 /**
@@ -42,6 +55,23 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
+  //DFStack.push(point);
+  if((point.x+1 < width_) || !visited[point.x+1][point.y]){
+    Point rightN = Point(point.x+1, point.y);
+    DFStack.push(rightN);
+  }
+  if((point.y+1 < height_) || !visited[point.x][point.y+1]){
+    Point lowerN = Point(point.x, point.y+1);
+    DFStack.push(lowerN);
+  }
+  if((point.x-1 < width_ && point.x != 0) || !visited[point.x-1][point.y]){
+    Point leftN = Point(point.x-1, point.y);
+    DFStack.push(leftN);
+  }
+  if((point.y-1 < height_ && point.y != 0) || !visited[point.x][point.y-1]){
+    Point upperN = Point(point.x, point.y-1);
+    DFStack.push(upperN);
+  }
 }
 
 /**
@@ -49,7 +79,16 @@ void DFS::add(const Point & point) {
  */
 Point DFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  if(DFStack.empty()){
+    return Point(-1,-1);
+  }
+  else{
+    Point temp = DFStack.top();
+    visited[temp.x][temp.y] = 1;
+    DFStack.pop();
+    return temp;
+  }
+  //return Point(0, 0);
 }
 
 /**
@@ -57,7 +96,15 @@ Point DFS::pop() {
  */
 Point DFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  if(DFStack.empty()){
+    return Point(-1,-1);
+  }
+  else{
+    //Point temp = DFStack.top();
+    //DFStack.pop();
+    return DFStack.top();
+  }
+  //return Point(0, 0);
 }
 
 /**
@@ -65,5 +112,11 @@ Point DFS::peek() const {
  */
 bool DFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+  if(DFStack.empty()){
+    return true;
+  }
+  else{
+    return false;
+  }
+  //return true;
 }

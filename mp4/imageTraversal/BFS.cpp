@@ -19,8 +19,20 @@ using namespace cs225;
  * @param tolerance If the current point is too different (difference larger than tolerance) with the start point,
  * it will not be included in this BFS
  */
-BFS::BFS(const PNG & png, const Point & start, double tolerance) {  
+BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   /** @todo [Part 1] */
+  width_ = png.width();
+  height_ = png.height();
+  visited = new int*[width_];
+  for(unsigned int i=0; i<width_; i++){
+    visited[i] = new int[height_];
+    for(unsigned int j=0; j<width_; j++){
+      visited[i][j] = 0;
+    }
+  }
+  start_ = start;
+  tolerance_ = tolerance;
+  BFSQueue.push(start);
 }
 
 /**
@@ -44,6 +56,22 @@ ImageTraversal::Iterator BFS::end() {
  */
 void BFS::add(const Point & point) {
   /** @todo [Part 1] */
+  if((point.x+1 < width_) || !visited[point.x+1][point.y]){
+    Point rightN = Point(point.x+1, point.y);
+    BFSQueue.push(rightN);
+  }
+  if((point.y+1 < height_) || !visited[point.x][point.y+1]){
+    Point lowerN = Point(point.x, point.y+1);
+    BFSQueue.push(lowerN);
+  }
+  if((point.x-1 < width_ && point.x != 0) || !visited[point.x-1][point.y]){
+    Point leftN = Point(point.x-1, point.y);
+    BFSQueue.push(leftN);
+  }
+  if((point.y-1 < height_ && point.y != 0) || !visited[point.x][point.y-1]){
+    Point upperN = Point(point.x, point.y-1);
+    BFSQueue.push(upperN);
+  }
 }
 
 /**
@@ -51,7 +79,16 @@ void BFS::add(const Point & point) {
  */
 Point BFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  if(BFSQueue.empty()){
+    return Point(-1,-1);
+  }
+  else{
+    Point temp = BFSQueue.front();
+    visited[temp.x][temp.y] = 1;
+    BFSQueue.pop();
+    return temp;
+  }
+  //return Point(0, 0);
 }
 
 /**
@@ -59,7 +96,15 @@ Point BFS::pop() {
  */
 Point BFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  if(BFSQueue.empty()){
+    return Point(-1,-1);
+  }
+  else{
+    //Point temp = BFSQueue.front();
+    //BFSQueue.dequeue();
+    return BFSQueue.front();
+  }
+  //return Point(0, 0);
 }
 
 /**
@@ -67,5 +112,11 @@ Point BFS::peek() const {
  */
 bool BFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+  if(BFSQueue.empty()){
+    return true;
+  }
+  else{
+    return false;
+  }
+  //return true;
 }
