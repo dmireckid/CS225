@@ -30,6 +30,7 @@ public:
   class Iterator : std::iterator<std::forward_iterator_tag, Point> {
   public:
     Iterator();
+    Iterator(ImageTraversal* imTrav);
 
     Iterator & operator++();
     Point operator*();
@@ -42,10 +43,12 @@ public:
     /** @todo [Part 1] */
     /** add private members here if neccesary*/
     ImageTraversal * blah;
-    Point current_;
+    //Point current_;
   };
 
   ImageTraversal();
+
+  double getDelta(HSLAPixel & p1, HSLAPixel & p2);
 
   /**
    * The begining of an iterator

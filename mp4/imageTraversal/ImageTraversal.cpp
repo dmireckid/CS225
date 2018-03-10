@@ -28,11 +28,23 @@ double ImageTraversal::calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2
   return sqrt( (h*h) + (s*s) + (l*l) );
 }
 
+double ImageTraversal::getDelta(HSLAPixel & p1, HSLAPixel & p2){
+  const HSLAPixel p3 = p1;
+  const HSLAPixel p4 = p2;
+  return calculateDelta(p3, p4);
+}
+
 /**
  * Default iterator constructor.
  */
 ImageTraversal::Iterator::Iterator() {
   /** @todo [Part 1] */
+  blah = NULL;
+
+}
+
+ImageTraversal::Iterator::Iterator(ImageTraversal* imTrav){
+  blah = imTrav;
 }
 
 /**
@@ -57,7 +69,8 @@ ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
  */
 Point ImageTraversal::Iterator::operator*() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  //cout << "op* wrong" << endl;
+  return blah->peek();
 }
 
 /**
@@ -67,7 +80,18 @@ Point ImageTraversal::Iterator::operator*() {
  */
 bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other) {
   /** @todo [Part 1] */
-  return false;
+  if(blah == NULL && other.blah == NULL){
+    return true;//false;
+  }
+  else if(blah == NULL || other.blah == NULL){
+    return false;//true;
+  }
+  if(blah->peek() == other.blah->peek()){
+    return true;//false;
+  }
+  else{
+    return false;//true;
+  }
 }
 
 ImageTraversal::ImageTraversal(){

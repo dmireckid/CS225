@@ -20,6 +20,7 @@
 DFS::DFS(const PNG & png, const Point & start, double tolerance) {
   width_ = png.width();
   height_ = png.height();
+  png_ = png;
   visited = new int*[width_];
   for(unsigned int i=0; i<width_; i++){
     visited[i] = new int[height_];
@@ -39,7 +40,8 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator DFS::begin() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator();
+  //cout << "begin began" << endl;
+  return ImageTraversal::Iterator(this);
 }
 
 /**
@@ -56,19 +58,24 @@ ImageTraversal::Iterator DFS::end() {
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
   //DFStack.push(point);
-  if((point.x+1 < width_) || !visited[point.x+1][point.y]){
+  //cout << "add seg" << endl;
+  if( (point.x+1 < width_) && !visited[point.x+1][point.y] &&
+   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x+1, point.y)) <= tolerance_)) {
     Point rightN = Point(point.x+1, point.y);
     DFStack.push(rightN);
   }
-  if((point.y+1 < height_) || !visited[point.x][point.y+1]){
+  if((point.y+1 < height_) && !visited[point.x][point.y+1] &&
+  (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y+1)) <= tolerance_)){
     Point lowerN = Point(point.x, point.y+1);
     DFStack.push(lowerN);
   }
-  if((point.x-1 < width_ && point.x != 0) || !visited[point.x-1][point.y]){
+  if((point.x-1 < width_ && point.x != 0) && !visited[point.x-1][point.y] &&
+  (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x-1, point.y)) <= tolerance_)){
     Point leftN = Point(point.x-1, point.y);
     DFStack.push(leftN);
   }
-  if((point.y-1 < height_ && point.y != 0) || !visited[point.x][point.y-1]){
+  if((point.y-1 < height_ && point.y != 0) && !visited[point.x][point.y-1] &&
+  (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y-1)) <= tolerance_)){
     Point upperN = Point(point.x, point.y-1);
     DFStack.push(upperN);
   }
@@ -96,6 +103,7 @@ Point DFS::pop() {
  */
 Point DFS::peek() const {
   /** @todo [Part 1] */
+  //cout << "peek peeked" << endl;
   if(DFStack.empty()){
     return Point(-1,-1);
   }

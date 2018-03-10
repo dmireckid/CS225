@@ -42,6 +42,7 @@ private:
   double tolerance_;
   unsigned int width_;
   unsigned int height_;
+  PNG png_;
 };
 
 #endif
