@@ -28,7 +28,15 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
       visited[i][j] = 0;
     }
   }
+  /*added = new int*[width_];
+  for(unsigned int i=0; i<width_; i++){
+    added[i] = new int[height_];
+    for(unsigned int j=0; j<width_; j++){
+      added[i][j] = 0;
+    }
+  }*/
   start_ = start;
+  visited[start.x][start.y] = 1;
   tolerance_ = tolerance;
   DFStack.push(start);
 
@@ -57,27 +65,30 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
-  //DFStack.push(point);
-  //cout << "add seg" << endl;
-  if( (point.x+1 < width_) && !visited[point.x+1][point.y] &&
+  //visited[point.x][point.y] = 1;
+  if((point.x+1 < width_) /*&& point.y < height_*/ && !visited[point.x+1][point.y] &&
    (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x+1, point.y)) <= tolerance_)) {
     Point rightN = Point(point.x+1, point.y);
     DFStack.push(rightN);
+    //added[rightN.x][rightN.y] = 1;
   }
-  if((point.y+1 < height_) && !visited[point.x][point.y+1] &&
+  if((point.y+1 < height_) /*&& point.x < width_*/ && !visited[point.x][point.y+1] &&
   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y+1)) <= tolerance_)){
     Point lowerN = Point(point.x, point.y+1);
     DFStack.push(lowerN);
+    //added[lowerN.x][lowerN.y] = 1;
   }
   if((point.x-1 < width_ && point.x != 0) && !visited[point.x-1][point.y] &&
   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x-1, point.y)) <= tolerance_)){
     Point leftN = Point(point.x-1, point.y);
     DFStack.push(leftN);
+    //added[leftN.x][leftN.y] = 1;
   }
   if((point.y-1 < height_ && point.y != 0) && !visited[point.x][point.y-1] &&
   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y-1)) <= tolerance_)){
     Point upperN = Point(point.x, point.y-1);
     DFStack.push(upperN);
+    //added[upperN.x][upperN.y] = 1;
   }
 }
 
@@ -89,6 +100,14 @@ Point DFS::pop() {
   if(DFStack.empty()){
     return Point(-1,-1);
   }
+  //Point temp = DFStack.top();
+  /*while(visited[temp.x][temp.y] == 1){
+    if(DFStack.empty()){
+      return Point(-2,-2);
+    }
+    temp = DFStack.top();
+    DFStack.pop();
+  }*/
   else{
     Point temp = DFStack.top();
     visited[temp.x][temp.y] = 1;

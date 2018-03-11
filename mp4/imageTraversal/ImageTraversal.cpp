@@ -80,17 +80,40 @@ Point ImageTraversal::Iterator::operator*() {
  */
 bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other) {
   /** @todo [Part 1] */
-  if(blah == NULL && other.blah == NULL){
-    return true;//false;
+  /*if(blah == NULL && other.blah == NULL){
+    return false;
   }
   else if(blah == NULL || other.blah == NULL){
-    return false;//true;
+    return true;
   }
   if(blah->peek() == other.blah->peek()){
-    return true;//false;
+    return false;
   }
   else{
-    return false;//true;
+    return true;
+  }*/
+  bool thisEmpty = false;
+  bool otherEmpty = false;
+  if(blah == NULL){
+    thisEmpty = true;
+  }
+  if(other.blah == NULL){
+    otherEmpty = true;
+  }
+  if(!thisEmpty){
+    thisEmpty = blah->empty();
+  }
+  if(!otherEmpty){
+    otherEmpty = other.blah->empty();
+  }
+  if(thisEmpty && otherEmpty){
+    return false;
+  }
+  else if((!thisEmpty)&&(!otherEmpty)){
+    return (blah != other.blah);
+  }
+  else{
+    return true;
   }
 }
 

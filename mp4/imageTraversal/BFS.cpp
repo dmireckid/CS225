@@ -32,6 +32,7 @@ BFS::BFS(const PNG & png, const Point & start, double tolerance) {
     }
   }
   start_ = start;
+  //visited[start.x][start.y] = 1;
   tolerance_ = tolerance;
   BFSQueue.push(start);
 }
@@ -87,12 +88,20 @@ Point BFS::pop() {
   if(BFSQueue.empty()){
     return Point(-1,-1);
   }
-  else{
-    Point temp = BFSQueue.front();
+  Point temp = BFSQueue.front();
+  while(visited[temp.x][temp.y] == 1){
+    if(BFSQueue.empty()){
+      return Point(-2,-2);
+    }
+    temp = BFSQueue.front();
+    BFSQueue.pop();
+  }
+  //else{
+    temp = BFSQueue.front();
     visited[temp.x][temp.y] = 1;
     BFSQueue.pop();
     return temp;
-  }
+  
   //return Point(0, 0);
 }
 

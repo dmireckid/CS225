@@ -37,6 +37,7 @@ private:
 	/** @todo [Part 1] */
 	/** add private members here*/
   int **visited;
+  //int **added;
   std::stack<Point> DFStack;
   Point start_;
   double tolerance_;
