@@ -34,7 +34,8 @@ BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   start_ = start;
   //visited[start.x][start.y] = 1;
   tolerance_ = tolerance;
-  BFSQueue.push(start);
+  BFSQueue.push(start_);
+  visited[start_.x][start_.y] = 1;
 }
 
 /**
@@ -42,7 +43,8 @@ BFS::BFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator BFS::begin() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator(this);
+  ImageTraversal* blah = new BFS(png_, start_, tolerance_);
+  return ImageTraversal::Iterator(blah);
 }
 
 /**
@@ -58,25 +60,29 @@ ImageTraversal::Iterator BFS::end() {
  */
 void BFS::add(const Point & point) {
   /** @todo [Part 1] */
-  if( (point.x+1 < width_) && !visited[point.x+1][point.y] &&
+  if( (point.x+1 < width_) && visited[point.x+1][point.y] == 0 &&
    (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x+1, point.y)) <= tolerance_)){
     Point rightN = Point(point.x+1, point.y);
     BFSQueue.push(rightN);
+    visited[rightN.x][rightN.y] = 1;
   }
   if((point.y+1 < height_) && !visited[point.x][point.y+1] &&
   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y+1)) <= tolerance_)){
     Point lowerN = Point(point.x, point.y+1);
     BFSQueue.push(lowerN);
+    visited[lowerN.x][lowerN.y] = 1;
   }
   if((point.x-1 < width_ && point.x != 0) && !visited[point.x-1][point.y] &&
   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x-1, point.y)) <= tolerance_)){
     Point leftN = Point(point.x-1, point.y);
     BFSQueue.push(leftN);
+    visited[leftN.x][leftN.y] = 1;
   }
   if((point.y-1 < height_ && point.y != 0) && !visited[point.x][point.y-1] &&
   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y-1)) <= tolerance_)){
     Point upperN = Point(point.x, point.y-1);
     BFSQueue.push(upperN);
+    visited[upperN.x][upperN.y] = 1;
   }
 }
 
@@ -85,7 +91,7 @@ void BFS::add(const Point & point) {
  */
 Point BFS::pop() {
   /** @todo [Part 1] */
-  if(BFSQueue.empty()){
+  /*if(BFSQueue.empty()){
     return Point(-1,-1);
   }
   Point temp = BFSQueue.front();
@@ -100,8 +106,11 @@ Point BFS::pop() {
     temp = BFSQueue.front();
     visited[temp.x][temp.y] = 1;
     BFSQueue.pop();
-    return temp;
-  
+    return temp;*/
+    Point front = BFSQueue.front();
+    BFSQueue.pop();
+    return front;
+
   //return Point(0, 0);
 }
 

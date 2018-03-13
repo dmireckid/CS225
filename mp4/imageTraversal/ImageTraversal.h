@@ -24,6 +24,8 @@ using namespace cs225;
  */
 class ImageTraversal {
 public:
+
+
   /**
    * A forward iterator through an ImageTraversal.
    */
@@ -38,7 +40,7 @@ public:
 
     /** @todo [Part 1] */
     /** add member functions if neccesary*/
-
+    Point current;
   private:
     /** @todo [Part 1] */
     /** add private members here if neccesary*/

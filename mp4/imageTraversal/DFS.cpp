@@ -38,7 +38,8 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
   start_ = start;
   visited[start.x][start.y] = 1;
   tolerance_ = tolerance;
-  DFStack.push(start);
+  DFStack.push(start_);
+  //visited[start_.x][start_.y] = 1;
 
   //REMINDER: DELETE THE GODDAMN FUCKING VISITED ARRAY
 }
@@ -49,7 +50,8 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
 ImageTraversal::Iterator DFS::begin() {
   /** @todo [Part 1] */
   //cout << "begin began" << endl;
-  return ImageTraversal::Iterator(this);
+  ImageTraversal* blah = new DFS(png_, start_, tolerance_);
+  return ImageTraversal::Iterator(blah);
 }
 
 /**
@@ -66,29 +68,29 @@ ImageTraversal::Iterator DFS::end() {
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
   //visited[point.x][point.y] = 1;
-  if((point.x+1 < width_) /*&& point.y < height_*/ && !visited[point.x+1][point.y] &&
+  if((point.x+1 < width_) /*&& point.y < height_*/ && visited[point.x+1][point.y] == 0 &&
    (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x+1, point.y)) <= tolerance_)) {
     Point rightN = Point(point.x+1, point.y);
     DFStack.push(rightN);
-    //added[rightN.x][rightN.y] = 1;
+    visited[rightN.x][rightN.y] = 1;
   }
-  if((point.y+1 < height_) /*&& point.x < width_*/ && !visited[point.x][point.y+1] &&
+  if((point.y+1 < height_) /*&& point.x < width_*/ && visited[point.x][point.y+1] == 0 &&
   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y+1)) <= tolerance_)){
     Point lowerN = Point(point.x, point.y+1);
     DFStack.push(lowerN);
-    //added[lowerN.x][lowerN.y] = 1;
+    visited[lowerN.x][lowerN.y] = 1;
   }
-  if((point.x-1 < width_ && point.x != 0) && !visited[point.x-1][point.y] &&
+  if((point.x-1 < width_ && point.x != 0) && visited[point.x-1][point.y] == 0 &&
   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x-1, point.y)) <= tolerance_)){
     Point leftN = Point(point.x-1, point.y);
     DFStack.push(leftN);
-    //added[leftN.x][leftN.y] = 1;
+    visited[leftN.x][leftN.y] = 1;
   }
-  if((point.y-1 < height_ && point.y != 0) && !visited[point.x][point.y-1] &&
+  if((point.y-1 < height_ && point.y != 0) && visited[point.x][point.y-1] == 0 &&
   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y-1)) <= tolerance_)){
     Point upperN = Point(point.x, point.y-1);
     DFStack.push(upperN);
-    //added[upperN.x][upperN.y] = 1;
+    visited[upperN.x][upperN.y] = 1;
   }
 }
 
@@ -97,24 +99,46 @@ void DFS::add(const Point & point) {
  */
 Point DFS::pop() {
   /** @todo [Part 1] */
-  if(DFStack.empty()){
-    return Point(-1,-1);
-  }
-  //Point temp = DFStack.top();
-  /*while(visited[temp.x][temp.y] == 1){
+  // if(DFStack.empty()){
+  //   return Point(-1,-1);
+  // }
+  // Point temp = DFStack.top();
+  // while(visited[temp.x][temp.y] == 1){
+  //   if(DFStack.empty()){
+  //     return Point(-2,-2);
+  //   }
+  //   temp = DFStack.top();
+  //   DFStack.pop();
+  // }
+  //   temp = DFStack.top();
+  //   visited[temp.x][temp.y] = 1;
+  //   DFStack.pop();
+  //   return temp;
+  /*Point temp = DFStack.top();
+  while(visited[temp.x][temp.y] == 1){
     if(DFStack.empty()){
       return Point(-2,-2);
     }
     temp = DFStack.top();
     DFStack.pop();
-  }*/
-  else{
+  }
+  if(!visited[temp.x][temp.y]){
     Point temp = DFStack.top();
     visited[temp.x][temp.y] = 1;
     DFStack.pop();
     return temp;
   }
-  //return Point(0, 0);
+  return Point(-3, -3);
+  while(visited[temp.x][temp.y] == 1){
+    DFStack.pop();
+    temp = DFStack.top();
+  }
+  visited[temp.x][temp.y] = 1;
+  DFStack.pop();
+  return temp;*/
+  Point top = DFStack.top();
+  DFStack.pop();
+  return top;
 }
 
 /**

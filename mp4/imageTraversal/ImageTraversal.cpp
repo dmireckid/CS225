@@ -58,7 +58,15 @@ ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   visited[temp.x][temp.y] = 1;
   this.pop();
   if(temp.x+1 <*/
-  blah->add(blah->pop());
+  // blah->add(blah->pop());
+  // return *this;
+  if (!blah->empty()) {
+    current = blah->pop();
+    blah->add(current);
+    if(blah->empty()){
+      blah = NULL;
+    }
+  }
   return *this;
 }
 
@@ -118,4 +126,5 @@ bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other)
 }
 
 ImageTraversal::ImageTraversal(){
+
 }
