@@ -32,13 +32,13 @@ public:
   Point pop();
   Point peek() const;
   bool empty() const;
-
+  //~BFS();
 private:
   /** @todo [Part 1] */
   /** add private members here*/
-  int **visited;
+  //int **visited;
   std::queue<Point> BFSQueue;
-  Point start_;
+  //Point start_;
   double tolerance_;
   unsigned int width_;
   unsigned int height_;

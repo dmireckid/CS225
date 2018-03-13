@@ -24,7 +24,7 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
   visited = new int*[width_];
   for(unsigned int i=0; i<width_; i++){
     visited[i] = new int[height_];
-    for(unsigned int j=0; j<width_; j++){
+    for(unsigned int j=0; j<height_; j++){
       visited[i][j] = 0;
     }
   }
@@ -36,7 +36,6 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
     }
   }*/
   start_ = start;
-  visited[start.x][start.y] = 1;
   tolerance_ = tolerance;
   DFStack.push(start_);
   //visited[start_.x][start_.y] = 1;
@@ -69,28 +68,24 @@ void DFS::add(const Point & point) {
   /** @todo [Part 1] */
   //visited[point.x][point.y] = 1;
   if((point.x+1 < width_) /*&& point.y < height_*/ && visited[point.x+1][point.y] == 0 &&
-   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x+1, point.y)) <= tolerance_)) {
+   (getDelta(png_.getPixel(start_.x, start_.y), png_.getPixel(point.x+1, point.y)) <= tolerance_)) {
     Point rightN = Point(point.x+1, point.y);
     DFStack.push(rightN);
-    visited[rightN.x][rightN.y] = 1;
   }
   if((point.y+1 < height_) /*&& point.x < width_*/ && visited[point.x][point.y+1] == 0 &&
-  (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y+1)) <= tolerance_)){
+  (getDelta(png_.getPixel(start_.x, start_.y), png_.getPixel(point.x, point.y+1)) <= tolerance_)){
     Point lowerN = Point(point.x, point.y+1);
     DFStack.push(lowerN);
-    visited[lowerN.x][lowerN.y] = 1;
   }
   if((point.x-1 < width_ && point.x != 0) && visited[point.x-1][point.y] == 0 &&
-  (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x-1, point.y)) <= tolerance_)){
+  (getDelta(png_.getPixel(start_.x, start_.y), png_.getPixel(point.x-1, point.y)) <= tolerance_)){
     Point leftN = Point(point.x-1, point.y);
     DFStack.push(leftN);
-    visited[leftN.x][leftN.y] = 1;
   }
   if((point.y-1 < height_ && point.y != 0) && visited[point.x][point.y-1] == 0 &&
-  (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y-1)) <= tolerance_)){
+  (getDelta(png_.getPixel(start_.x, start_.y), png_.getPixel(point.x, point.y-1)) <= tolerance_)){
     Point upperN = Point(point.x, point.y-1);
     DFStack.push(upperN);
-    visited[upperN.x][upperN.y] = 1;
   }
 }
 
@@ -147,14 +142,8 @@ Point DFS::pop() {
 Point DFS::peek() const {
   /** @todo [Part 1] */
   //cout << "peek peeked" << endl;
-  if(DFStack.empty()){
-    return Point(-1,-1);
-  }
-  else{
-    //Point temp = DFStack.top();
-    //DFStack.pop();
-    return DFStack.top();
-  }
+  return DFStack.top();
+
   //return Point(0, 0);
 }
 

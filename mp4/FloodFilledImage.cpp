@@ -75,8 +75,8 @@ Animation FloodFilledImage::animate(unsigned frameInterval) const {
     ImageTraversal* it = blah2[i];
     ColorPicker* cp = colour[i];
     for(ImageTraversal::Iterator iter = it->begin(); iter != it->end(); ++iter){
-      HSLAPixel& pix = png_.getPixel(iter.current.x, iter.current.y);
-      pix = cp->getColor(iter.current.x, iter.current.y);
+      HSLAPixel& pix = png_.getPixel(iter.current_.x, iter.current_.y);
+      pix = cp->getColor(iter.current_.x, iter.current_.y);
       framee++;
       if(framee%frameInterval == 0){
         animation.addFrame(png_);

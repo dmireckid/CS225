@@ -36,10 +36,9 @@ public:
 private:
 	/** @todo [Part 1] */
 	/** add private members here*/
-  int **visited;
   //int **added;
   std::stack<Point> DFStack;
-  Point start_;
+  //Point start_;
   double tolerance_;
   unsigned int width_;
   unsigned int height_;

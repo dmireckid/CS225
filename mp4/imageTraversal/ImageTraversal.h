@@ -40,7 +40,7 @@ public:
 
     /** @todo [Part 1] */
     /** add member functions if neccesary*/
-    Point current;
+    Point current_;
   private:
     /** @todo [Part 1] */
     /** add private members here if neccesary*/
@@ -49,7 +49,9 @@ public:
   };
 
   ImageTraversal();
-
+  int** visited;
+  Point start_;
+  //Point current_;
   double getDelta(HSLAPixel & p1, HSLAPixel & p2);
 
   /**
@@ -87,7 +89,8 @@ public:
 
 private:
   static double calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2);
-
+  //int** visited;
+  //Point start_;
 };
 
 

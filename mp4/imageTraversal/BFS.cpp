@@ -27,7 +27,7 @@ BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   visited = new int*[width_];
   for(unsigned int i=0; i<width_; i++){
     visited[i] = new int[height_];
-    for(unsigned int j=0; j<width_; j++){
+    for(unsigned int j=0; j<height_; j++){
       visited[i][j] = 0;
     }
   }
@@ -35,7 +35,7 @@ BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   //visited[start.x][start.y] = 1;
   tolerance_ = tolerance;
   BFSQueue.push(start_);
-  visited[start_.x][start_.y] = 1;
+  //visited[start_.x][start_.y] = 1;
 }
 
 /**
@@ -61,28 +61,32 @@ ImageTraversal::Iterator BFS::end() {
 void BFS::add(const Point & point) {
   /** @todo [Part 1] */
   if( (point.x+1 < width_) && visited[point.x+1][point.y] == 0 &&
-   (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x+1, point.y)) <= tolerance_)){
+   (getDelta(png_.getPixel(start_.x, start_.y), png_.getPixel(point.x+1, point.y)) < tolerance_)){
     Point rightN = Point(point.x+1, point.y);
     BFSQueue.push(rightN);
-    visited[rightN.x][rightN.y] = 1;
+    //cout << "Right pushed" << endl;
+    //visited[rightN.x][rightN.y] = 1;
   }
-  if((point.y+1 < height_) && !visited[point.x][point.y+1] &&
-  (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y+1)) <= tolerance_)){
+  if((point.y+1 < height_) && visited[point.x][point.y+1] == 0 &&
+  (getDelta(png_.getPixel(start_.x, start_.y), png_.getPixel(point.x, point.y+1)) < tolerance_)){
     Point lowerN = Point(point.x, point.y+1);
     BFSQueue.push(lowerN);
-    visited[lowerN.x][lowerN.y] = 1;
+    //cout << "Lower pushed" << endl;
+    //visited[lowerN.x][lowerN.y] = 1;
   }
-  if((point.x-1 < width_ && point.x != 0) && !visited[point.x-1][point.y] &&
-  (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x-1, point.y)) <= tolerance_)){
+  if((point.x-1 <= width_ && point.x != 0) && visited[point.x-1][point.y] == 0 &&
+  (getDelta(png_.getPixel(start_.x, start_.y), png_.getPixel(point.x-1, point.y)) < tolerance_)){
     Point leftN = Point(point.x-1, point.y);
     BFSQueue.push(leftN);
-    visited[leftN.x][leftN.y] = 1;
+      //cout << "Left pushed" << endl;
+    //visited[leftN.x][leftN.y] = 1;
   }
-  if((point.y-1 < height_ && point.y != 0) && !visited[point.x][point.y-1] &&
-  (getDelta(png_.getPixel(point.x, point.y), png_.getPixel(point.x, point.y-1)) <= tolerance_)){
+  if((point.y-1 <= height_ && point.y != 0) && visited[point.x][point.y-1] == 0 &&
+  (getDelta(png_.getPixel(start_.x, start_.y), png_.getPixel(point.x, point.y-1)) < tolerance_)){
     Point upperN = Point(point.x, point.y-1);
     BFSQueue.push(upperN);
-    visited[upperN.x][upperN.y] = 1;
+    //cout << "Upper pushed" << endl;
+    //visited[upperN.x][upperN.y] = 1;
   }
 }
 
@@ -119,14 +123,15 @@ Point BFS::pop() {
  */
 Point BFS::peek() const {
   /** @todo [Part 1] */
-  if(BFSQueue.empty()){
+  /*if(BFSQueue.empty()){
     return Point(-1,-1);
   }
   else{
     //Point temp = BFSQueue.front();
     //BFSQueue.dequeue();
-    return BFSQueue.front();
-  }
+    return */
+  return BFSQueue.front();
+
   //return Point(0, 0);
 }
 

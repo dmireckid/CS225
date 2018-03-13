@@ -45,6 +45,7 @@ ImageTraversal::Iterator::Iterator() {
 
 ImageTraversal::Iterator::Iterator(ImageTraversal* imTrav){
   blah = imTrav;
+  current_ = blah->start_;
 }
 
 /**
@@ -61,10 +62,20 @@ ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   // blah->add(blah->pop());
   // return *this;
   if (!blah->empty()) {
-    current = blah->pop();
-    blah->add(current);
+    current_ = blah->pop();
+    blah->visited[current_.x][current_.y] = 1;
+    //blah->add(current_);
+    while(!blah->empty() && blah->visited[blah->peek().x][blah->peek().y] == 1){
+      //temp = blah->top();
+      Point temp;
+      temp = blah->pop();
+    }
+    blah->add(current_);
     if(blah->empty()){
       blah = NULL;
+    }
+    else{
+      current_ = blah->peek();
     }
   }
   return *this;
