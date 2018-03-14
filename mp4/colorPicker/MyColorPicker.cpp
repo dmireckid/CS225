@@ -12,5 +12,10 @@ using namespace cs225;
  */
 HSLAPixel MyColorPicker::getColor(unsigned x, unsigned y) {
   /* @todo [Part 3] */
-  return HSLAPixel();
+  HSLAPixel pixel(100, 1, luminance);
+  luminance += increment;
+  if (luminance >= 1) { luminance -= 1; }
+  return pixel;
 }
+
+MyColorPicker::MyColorPicker(double increment) : luminance(0), increment(increment) { }

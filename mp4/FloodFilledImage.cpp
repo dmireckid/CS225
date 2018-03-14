@@ -57,27 +57,17 @@ void FloodFilledImage::addFloodFill(ImageTraversal & traversal, ColorPicker & co
  */
 Animation FloodFilledImage::animate(unsigned frameInterval) const {
   Animation animation;
-  /** @todo [Part 2] */
-  /*PNG* og = new PNG(png_);
-  PNG* supreme = NULL;
-  unsigned frameIntMe = 0;
-
-
-  new png png_
-  add frames
-  temp new current
-  iterate addFloodFill vector
-  fps++ % frameInterval/ add new frame each frameInterval
-  make copies of png temp=newcurr*/
   animation.addFrame(png_);
   int framee = 0;
   for(unsigned long i=0; i < blah2.size(); i++){
     ImageTraversal* it = blah2[i];
     ColorPicker* cp = colour[i];
+
     for(ImageTraversal::Iterator iter = it->begin(); iter != it->end(); ++iter){
       HSLAPixel& pix = png_.getPixel(iter.current_.x, iter.current_.y);
       pix = cp->getColor(iter.current_.x, iter.current_.y);
       framee++;
+
       if(framee%frameInterval == 0){
         animation.addFrame(png_);
         framee = 1;
@@ -86,4 +76,5 @@ Animation FloodFilledImage::animate(unsigned frameInterval) const {
   }
   animation.addFrame(png_);
   return animation;
+  //aaaand watch the magic happen :)
 }
