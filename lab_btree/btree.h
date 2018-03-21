@@ -346,8 +346,42 @@ template <class T, class C>
 size_t insertion_idx(const std::vector<T>& elements, const C& val)
 {
     /* TODO Your code goes here! */
+    size_t nelements = elements.size();
+    size_t begin = 0;
+    size_t end = nelements-1;
+    if(nelements == 0){
+      return 0;
+    }
+    else if(elements[0] > val){
+      return 0;
+    }
+    else if(elements[nelements-1] == val){
+      return (nelements-1);
+    }
+    else if(elements[nelements-1] < val){
+      return nelements;
+    }
+    else{
+      return binarySearch(elements, val, begin, end);
+    }
+}
 
-    return 5;
+template <class T, class C>
+size_t binarySearch(const std::vector<T>& elements, const C& val, size_t begin, size_t end)
+{
+  size_t middle = (begin+end)/2;
+  if(val == elements[middle]){
+    return middle;
+  }
+  else if(val > elements[middle]  &&  val < elements[middle+1]){
+    return (middle+1);
+  }
+  else if(val < elements[middle]){
+    return binarySearch(elements, val, begin, middle);
+  }
+  else{
+    return binarySearch(elements, val, middle+1, end);
+  }
 }
 
 #include "btree_given.cpp"
