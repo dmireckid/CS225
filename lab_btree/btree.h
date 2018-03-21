@@ -330,6 +330,24 @@ class BTree
                   unsigned int order) const;
 };
 
+template <class T, class C>
+size_t binarySearch(const std::vector<T>& elements, const C& val, size_t begin, size_t end)
+{
+  size_t middle = (begin+end)/2;
+  if(val == elements[middle]){
+    return middle;
+  }
+  else if(val > elements[middle]  &&  val < elements[middle+1]){
+    return (middle+1);
+  }
+  else if(val < elements[middle]){
+    return binarySearch(elements, val, begin, middle);
+  }
+  else{
+    return binarySearch(elements, val, middle+1, end);
+  }
+}
+
 /**
  * Generalized function for finding the insertion index of a given element
  * into a given sorted vector.
@@ -366,23 +384,23 @@ size_t insertion_idx(const std::vector<T>& elements, const C& val)
     }
 }
 
-template <class T, class C>
-size_t binarySearch(const std::vector<T>& elements, const C& val, size_t begin, size_t end)
-{
-  size_t middle = (begin+end)/2;
-  if(val == elements[middle]){
-    return middle;
-  }
-  else if(val > elements[middle]  &&  val < elements[middle+1]){
-    return (middle+1);
-  }
-  else if(val < elements[middle]){
-    return binarySearch(elements, val, begin, middle);
-  }
-  else{
-    return binarySearch(elements, val, middle+1, end);
-  }
-}
+// template <class T, class C>
+// size_t binarySearch(const std::vector<T>& elements, const C& val, size_t begin, size_t end)
+// {
+//   size_t middle = (begin+end)/2;
+//   if(val == elements[middle]){
+//     return middle;
+//   }
+//   else if(val > elements[middle]  &&  val < elements[middle+1]){
+//     return (middle+1);
+//   }
+//   else if(val < elements[middle]){
+//     return binarySearch(elements, val, begin, middle);
+//   }
+//   else{
+//     return binarySearch(elements, val, middle+1, end);
+//   }
+// }
 
 #include "btree_given.cpp"
 #include "btree.cpp"
