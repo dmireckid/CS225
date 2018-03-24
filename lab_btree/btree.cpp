@@ -153,6 +153,18 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
 
 
     /* TODO Your code goes here! */
+    parent->elements.insert(elem_itr, child->elements[mid_elem_idx]); //implement insert first
+    parent->children.insert(child_itr, new_right);
+    new_right->elements.assign(mid_elem_itr+1, child->elements.end());
+
+    new_left->elements.erase(mid_elem_itr, child->elements.end());
+
+    if(!child->children.empty()){
+      new_right->children.assign(mid_child_itr, child->children.end());
+
+      new_left->children.erase(mid_child_itr, child->children.end());
+      //WHY ARE THERE SO MANY VARIABLE NAMES TO KEEP TRACK OF UGHHHH
+    }
 }
 
 /**
@@ -181,6 +193,13 @@ void BTree<K, V>::insert(BTreeNode* subroot, const DataPair& pair)
       return; //subroot->elements[first_larger_idx].value;
     }
     else if(subroot->is_leaf){
-      
+      auto temp = subroot->elements.begin() + first_larger_idx;
+      subroot->elements.insert(temp, pair);
+    }
+    else{
+      insert(subroot->children[first_larger_idx], pair);
+      if(order <= subroot->children[first_larger_idx]->elements.size()){
+        split_child(subroot, first_larger_idx);
+      }
     }
 }
