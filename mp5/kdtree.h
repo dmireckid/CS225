@@ -44,6 +44,11 @@ class KDTree
     };
 
   public:
+    int distanceDim(const Point<Dim>& a, const Point<Dim>& b) const;
+    //help to find distance
+    KDTree(const vector<Point<Dim>>& newPoints, int dimension, int left, int right);
+    //constructor Helper
+    
     /**
      * Determines if Point a is smaller than Point b in a given dimension d.
      * If there is a tie, break it with Point::operator<().
