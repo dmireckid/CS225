@@ -48,17 +48,73 @@ bool KDTree<Dim>::shouldReplace(const Point<Dim>& target,
 template <int Dim>
 KDTree<Dim>::KDTree(const vector<Point<Dim>>& newPoints)
 {
+    points = newPoints;
     //Helper
-    KDTree(newPoints, 0, 0, newPoints.size()-1);
+    if(points.size() != 0){
+      KDTreeCtor(0, 0, points.size()-1, points);
+    }
+
 }
 
 template <int Dim>
-KDTree<Dim>::KDTree(const vector<Point<Dim>>& newPoints, int dimension, int left, int right){
+void KDTree<Dim>::KDTreeCtor(int dimension, int left, int right, vector<Point<Dim>>& newPoints){
     int middle = (left + right)/2;
-    if(left < right){
+    if(left > right){
       return;
     }
+    points[middle] = quickselect(middle, dimension, left, right, newPoints);
+    //if(left < middle){
+    //create a subroot?
+    KDTreeNode temp = KDTreeNode(points[middle]);
+    //left subtree->
+    KDTreeCtor((dimension+1)%Dim, left, middle-1, newPoints);
+    //RIGHT subtree->
+    KDTreeCtor((dimension+1)%Dim, middle+1, right, newPoints);
 
+    // if(left < right){
+    //   return;
+    // }
+
+}
+
+template <int Dim>
+Point<Dim> KDTree<Dim>::quickselect(int middle, int dimension, int left, int right, vector<Point<Dim>>& newPoints){
+  while(left<right){
+    int temp = hadToWriteAGDPartitionFunction(middle, dimension, left, right, newPoints);
+    if(temp == middle){
+      return newPoints[temp];
+    }
+    else if(temp > middle){
+      right = temp-1;
+    }
+    else{
+      left = temp+1;
+    }
+  }
+
+  return newPoints[left];
+}
+
+template <int Dim>
+int KDTree<Dim>::hadToWriteAGDPartitionFunction(int middle, int dimension, int left, int right, vector<Point<Dim>>& newPoints){
+  Point<Dim> partition = newPoints[middle];
+  Point<Dim> temp = newPoints[right];
+  newPoints[right] = newPoints[middle];
+  newPoints[middle] = temp;
+  int leftemp = left;
+  for(int i=left; i<right; i++){
+    if(smallerDimVal(newPoints[i], partition, dimension)){
+      temp = points[leftemp];
+      newPoints[leftemp] = points[i];
+      newPoints[i] = temp;
+      leftemp++;
+    }
+  }
+  temp = newPoints[right];
+  newPoints[right] = newPoints[leftemp];
+  newPoints[leftemp] = temp;
+
+  return leftemp;
 }
 
 template <int Dim>
@@ -87,9 +143,15 @@ KDTree<Dim>::~KDTree() {
 template <int Dim>
 Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
 {
-    /**
-     * @todo Implement this function!
-     */
+    int right = (points.size() - 1);
+    Point<Dim> temp = points[right/2];
+    Point<Dim> result = findNearestNeighbor(query, 0, right, 0, temp);
+    return result;
+}
 
+template <int Dim>
+Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, int left, int right, int dimension, const Point<Dim>& variable) const
+{
+    //helper :
     return Point<Dim>();
 }
