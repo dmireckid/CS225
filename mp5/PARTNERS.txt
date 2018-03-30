@@ -1,2 +1,2 @@
-netid1
-netid2
+netid1 = mirecki2
+netid2 = xl16

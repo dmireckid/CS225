@@ -42,7 +42,7 @@ bool tree_equals_output(stringstream & s, string filename)
     return true;
 }
 
-void compareBinaryFiles( string yourFile, string ourFile ) 
+void compareBinaryFiles( string yourFile, string ourFile )
 {
     ifstream ourBinary( ourFile, ios::binary );
     stringstream ours;
@@ -97,12 +97,14 @@ void _test_linear_constructor(int size) {
 
   KDTree<K> tree(points);
 
+  cout << "Printing tree ctor test" << endl;
+  tree.printTree();
   std::string fname = "test_result_kdtree_"+to_string(size)+".kd";
 
   ofstream outputFile(fname, ofstream::out);
   tree.printTree(outputFile, colored_out::DISABLE, -1);
   outputFile.close();
-
+  //tree.printTree();
   compareBinaryFiles(fname, "tests/expected_kdtree_"+to_string(size)+".kd" );
 }
 

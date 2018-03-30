@@ -15,6 +15,7 @@
 #include <vector>
 #include "util/coloredout.h"
 #include "point.h"
+#include <cmath>
 
 using std::vector;
 using std::string;
@@ -264,15 +265,15 @@ class KDTree
      */
      int distanceDim(const Point<Dim>& a, const Point<Dim>& b) const;
      //help to find distance
-     void KDTreeCtor(int dimension, int left, int right, vector<Point<Dim>>& newPoints);
+     void KDTreeCtor(int dimension, /*int left, int right,*/ vector<Point<Dim>>& newPoints, KDTreeNode*& subroot);
      //constructor Helper
      Point<Dim> quickselect(int middle, int dimension, int left, int right, vector<Point<Dim>>& newPoints);
      //quickselect w/partition
-     int hadToWriteAGDPartitionFunction(int middle, int dimension, int left, int right, vector<Point<Dim>>& newPoints);
+     int partition(int middle, int dimension, int left, int right, vector<Point<Dim>>& newPoints);
      //partition
      vector<Point<Dim>> points;
      //point vecotr
-     Point<Dim> findNearestNeighbor(const Point<Dim>& query, int left, int right, int dimension, const Point<Dim>& variable) const;
+     Point<Dim> findNearestNeighbor(const Point<Dim>& query, int left, int right, int dimension, Point<Dim>& variable) const;
 };
 
 #include "kdtree.cpp"
