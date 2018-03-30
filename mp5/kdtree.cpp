@@ -149,22 +149,22 @@ KDTree<Dim>::~KDTree() {
 template <int Dim>
 Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
 {
-    int right = (points.size() - 1);
-    Point<Dim> temp = points[right/2];
-    Point<Dim> result = findNearestNeighbor(query, 0, right, 0, temp);
-    return result;
+    // int right = (points.size() - 1);
+    // Point<Dim> temp = points[right/2];
+    // Point<Dim> result = findNearestNeighbor(query, 0, right, 0, temp);
+    // return result;
 
-    //return findNearestNeighbor(query, root, Point<Dim>(), false, 0);
+    return findNearestNeighbor(query, root, Point<Dim>(), false, 0);
 }
 
 template <int Dim>
-Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, int left, int right, int dimension, Point<Dim>& variable) const
-{
-// Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> neighbor, bool setup, int dimension) const
+// Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, int left, int right, int dimension, Point<Dim>& variable) const
 // {
+Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> neighbor, bool setup, int dimension) const
+{
     //helper
     //i hate subroots :)
-    if(left > right){
+    /*if(left > right){
       if(shouldReplace(query, variable, points[left])){
         variable = points[left];
       }
@@ -203,7 +203,7 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, int left, i
         }
       }
     }
-    return variable;/*
+    return variable;*/
     if(subroot == NULL){
       return Point<Dim>();
     }
@@ -230,8 +230,8 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, int left, i
         if(shouldReplace(query, neighbor, subroot->left->point)){
           neighbor = subroot->left->point;
         }
-        int temp = pow((points[middle][dimension%Dim] - query[dimension%Dim]), 2)
-        if(abs(subroot->left->point[dimension]-query[dimension]) < temp)){//calculateRadius(query, neighbor)){
+
+        if(abs(subroot->left->point[dimension]-query[dimension]) < distanceDim(query, neighbor)){
           if(subroot->left->right != NULL){
             dimension = (dimension+1)%Dim;
             Point<Dim> p2 = findNearestNeighbor(query, subroot->left->right, neighbor, setup, dimension);
@@ -253,11 +253,11 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, int left, i
         if(shouldReplace(query, neighbor, subroot->right->point)){
           neighbor = subroot->right->point;
         }
-        int temp = pow((points[middle][dimension%Dim] - query[dimension%Dim]), 2);
-        if(abs(subroot->right->point[dimension]-query[dimension]) < temp)){//calculateRadius(query, neighbor)){
+
+        if(abs(subroot->right->point[dimension]-query[dimension]) < distanceDim(query, neighbor)){
           if(subroot->right->right != NULL){
             dimension = (dimension+1)%Dim;
-            Point<Dim> p2 = findNearestNeighbor(query, subroot->right>left, neighbor, setup, dimension);
+            Point<Dim> p2 = findNearestNeighbor(query, subroot->right->left, neighbor, setup, dimension);
             if(shouldReplace(query, neighbor, p2)){
               neighbor = p2;
             }
@@ -269,5 +269,5 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, int left, i
     if(shouldReplace(query, neighbor, subroot->point)){
       neighbor = subroot->point;
     }
-    return neighbor;*/
+    return neighbor;
 }

@@ -273,7 +273,11 @@ class KDTree
      //partition
      vector<Point<Dim>> points;
      //point vecotr
-     Point<Dim> findNearestNeighbor(const Point<Dim>& query, int left, int right, int dimension, Point<Dim>& variable) const;
+     //<Dim> findNearestNeighbor(const Point<Dim>& query, int left, int right, int dimension, Point<Dim>& variable) const;
+     //v1
+     Point<Dim> findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> neighbor, bool setup, int dimension) const;
+     //v2
+
 };
 
 #include "kdtree.cpp"
