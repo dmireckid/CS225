@@ -342,7 +342,7 @@ TEST_CASE("KDTree::findNearestNeighbor (3D), testing tie-breaking", "[weight=1][
   INFO(s.str());
 
   action.trigger = true;
-
+  tree.findNearestNeighbor(target);
   REQUIRE( tree.findNearestNeighbor(target) == expected );
   REQUIRE( tree.findNearestNeighbor(target2) == expected2 );
 }

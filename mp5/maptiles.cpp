@@ -21,7 +21,45 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
      * @todo Implement this function!
      */
 
-    return NULL;
+    double hsl[3], hsl2[3];
+    vector<Point<3>> pixels;
+    map<Point<3>, int> mapp;
+
+    for(size_t i=0; i<theTiles.size(); i++){
+      HSLAPixel p1 = theTiles[i].getAverageColor();
+      hsl[0] = p1.h/360;
+      hsl[1] = p1.s;
+      hsl[2] = p1.l;
+
+      Point<3> p2(hsl);
+      pixels.push_back(p2);
+    }
+
+    for(size_t i=0; i<pixels.size(); i++){
+      mapp[pixels[i]] = i;
+    }
+
+    KDTree<3>::KDTree tree(pixels);
+    int rows = theSource.getRows();
+    int cols = theSource.getColumns();
+    MosaicCanvas* result = new MosaicCanvas(rows, cols);
+
+    for(int i=0; i<rows; i++){
+      for(int j=0; j<cols; j++){
+        HSLAPixel general = theSource.getRegionColor(i, j);
+        hsl2[0] = general.h/360;
+        hsl2[1] = general.s;
+        hsl2[2] = general.l;
+
+        Point<3> g(hsl2);
+        Point<3> finale = tree.findNearestNeighbor(g);
+        int index = mapp[finale];
+        TileImage* tile = new TileImage(theTiles[index]);
+        result->setTile(i,j,tile);
+      }
+    }
+
+    return result;
 }
 
 TileImage* get_match_at_idx(const KDTree<3>& tree,

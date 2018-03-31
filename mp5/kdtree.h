@@ -15,7 +15,6 @@
 #include <vector>
 #include "util/coloredout.h"
 #include "point.h"
-#include <cmath>
 
 using std::vector;
 using std::string;
@@ -45,8 +44,6 @@ class KDTree
     };
 
   public:
-
-
     /**
      * Determines if Point a is smaller than Point b in a given dimension d.
      * If there is a tie, break it with Point::operator<().
@@ -263,21 +260,16 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
-     int distanceDim(const Point<Dim>& a, const Point<Dim>& b) const;
-     //help to find distance
-     void KDTreeCtor(int dimension, /*int left, int right,*/ vector<Point<Dim>>& newPoints, KDTreeNode*& subroot);
-     //constructor Helper
-     Point<Dim> quickselect(int middle, int dimension, int left, int right, vector<Point<Dim>>& newPoints);
-     //quickselect w/partition
-     int partition(int middle, int dimension, int left, int right, vector<Point<Dim>>& newPoints);
-     //partition
-     vector<Point<Dim>> points;
-     //point vecotr
-     //<Dim> findNearestNeighbor(const Point<Dim>& query, int left, int right, int dimension, Point<Dim>& variable) const;
-     //v1
-     Point<Dim> findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> neighbor, bool setup, int dimension) const;
-     //v2
+    double calculateRadius(Point<Dim> p1, const Point<Dim> p2) const;
+    Point<Dim> findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> candidate, bool setupLeaf, int splittingDim) const;
+    size_t partition(vector<Point<Dim>>& v, int left, int right, int pivotIndex, int curDim);
+    Point<Dim> findMedian(vector<Point<Dim>>& v, int left, int right, int curDim);
 
+    void buildTree(vector<Point<Dim>>& v, KDTreeNode*& subroot, int curDim);
+
+    void clear(KDTreeNode* subroot);
+    void clear();
+    KDTreeNode* copy(KDTreeNode* subroot);
 };
 
 #include "kdtree.cpp"
