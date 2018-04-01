@@ -13,7 +13,7 @@ using std::string;
 using std::vector;
 using std::ofstream;
 using std::endl;
- 
+
 /**
  * Constructs an AnagramFinder based on a filename to read potential
  * anagrams from.
@@ -56,9 +56,32 @@ bool AnagramFinder<Dict>::checkWord(const string& word, const string& test)
      * templated hashtable class Dict.
      */
 
-    (void) word; // prevent warnings... When you implement this function, remove this line.
-    (void) test; // prevent warnings... When you implement this function, remove this line.
+    //(void) word; // prevent warnings... When you implement this function, remove this line.
+    //(void) test; // prevent warnings... When you implement this function, remove this line.
 
+    if(word.length() != test.length()){
+      return false;
+    }
+    else{
+      Dict<char, int> hash1(26);
+      Dict<char, int> hash2(26);
+
+      for(char i = 'a'; i<='z'; i++){
+        hash1[i] = 0;
+        hash2[i] = 0;
+      }
+      for(size_t i = 0; i<word.length(); i++){
+        hash1[tolower(word[i])]++;
+      }
+      for(size_t j = 0; j<test.length(); j++){
+        hash2[tolower(test[j])]++;
+      }
+      for(char i = 'a'; i<='z'; i++){
+        if(hash1[i] != hash2[i]){
+          return false;
+        }
+      }
+    }
     return true;
 
     return true;

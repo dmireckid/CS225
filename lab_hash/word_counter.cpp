@@ -27,7 +27,17 @@ vector<pair<string, int>> WordFreq<Dict>::getWords(int threshold) const
 {
     TextFile infile(filename);
     vector<pair<string, int>> ret;
-
-    (void) threshold; // prevent warnings... When you implement this function, remove this line.
+    int hashValue = 256;
+    Dict<std::string, int> hashTable(hashValue);
+    while(infile.good()){
+      std::string temp = infile.getNextWord();
+      hashTable[temp]++;
+    }
+    for(auto &it:hashTable){
+      if(it.second >= threshold){
+        ret.push_back(it);
+      }
+    }
+    //(void) threshold; // prevent warnings... When you implement this function, remove this line.
     return ret;
 }

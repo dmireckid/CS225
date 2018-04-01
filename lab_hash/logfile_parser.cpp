@@ -35,8 +35,8 @@ LogfileParser::LogLine::LogLine(const string& line)
         dte += dline;
         dte += " ";
     } while (iss);
-		
-    dte = dte.substr(0, dte.length() - 6); 
+
+    dte = dte.substr(0, dte.length() - 6);
     std::tm tm = {};
     std::stringstream ss(dte);
     ss >> std::get_time(&tm, "%a %b %d %H:%M:%S %Y");
@@ -73,6 +73,22 @@ LogfileParser::LogfileParser(const string& fname) : whenVisitedTable(256)
          * this problem. This should also build the uniqueURLs member
          * vector as well.
          */
+         std::string temp = ll.url;
+         std::string tempkey = ll.customer.substr(1, ll.customer.size() - 3);
+         tempkey.append(temp);
+
+         if(whenVisitedTable.keyExists(tempkey)){
+           if(whenVisitedTable[tempkey] < ll.date){
+             whenVisitedTable[tempkey] = ll.date;
+           }
+         }
+         else{
+           whenVisitedTable.insert(tempkey, ll.date);
+         }
+         if(pageVisitedTable.keyExists(temp) == false){
+           uniqueURLs.push_back(temp);
+         }
+         pageVisitedTable[temp] = true;
     }
     infile.close();
 }
@@ -90,11 +106,14 @@ bool LogfileParser::hasVisited(const string& customer, const string& url) const
     /**
      * @todo Implement this function.
      */
+     std::string temp = url;
+     std::string tempkey = customer.substr(1, customer.size()-3);
+     tempkey.append(temp);
 
-    (void) customer; // prevent warnings... When you implement this function, remove this line.
-    (void) url;      // prevent warnings... When you implement this function, remove this line.
+    //(void) customer; // prevent warnings... When you implement this function, remove this line.
+    //(void) url;      // prevent warnings... When you implement this function, remove this line.
 
-    return true; // replaceme
+    return whenVisitedTable.keyExists(tempkey); // replaceme
 }
 
 /**
@@ -114,11 +133,13 @@ time_t LogfileParser::dateVisited(const string& customer,
     /**
      * @todo Implement this function.
      */
+     std::string temp = url;
+     std::string tempkey = customer.substr(1, customer.size()-3);
+     tempkey.append(temp);
+    //(void) customer; // prevent warnings... When you implement this function, remove this line.
+    //(void) url;      // prevent warnings... When you implement this function, remove this line.
 
-    (void) customer; // prevent warnings... When you implement this function, remove this line.
-    (void) url;      // prevent warnings... When you implement this function, remove this line.
-
-    return time_t(); // replaceme
+    return whenVisitedTable.find(tempkey); // replaceme
 }
 
 /**
