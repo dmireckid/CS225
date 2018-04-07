@@ -73,7 +73,7 @@ heap<T, Compare>::heap()
 }
 
 template <class T, class Compare>
-heap<T, Compare>::heap(const std::vector<T>& elems) 
+heap<T, Compare>::heap(const std::vector<T>& elems)
 {
     // @TODO Construct a heap using the buildHeap algorithm
 }
@@ -82,27 +82,40 @@ template <class T, class Compare>
 T heap<T, Compare>::pop()
 {
     // @TODO Remove, and return, the element with highest priority
-    return T();
+    //return T();
+    T temp = *(_elems.begin()+1);
+    _elems[1] = _elems[_elems.size()-1];
+    _elems.pop_back();
+    heapifyDown(1);
+    return temp;
 }
 
 template <class T, class Compare>
 T heap<T, Compare>::peek() const
 {
     // @TODO Return, but do not remove, the element with highest priority
-    return T();
+
+    return _elems[1];
 }
 
 template <class T, class Compare>
 void heap<T, Compare>::push(const T& elem)
 {
     // @TODO Add elem to the heap
+    _elems.push_back(elem);
+    heapifyUp(_elems.size()-1);
 }
 
 template <class T, class Compare>
 bool heap<T, Compare>::empty() const
 {
     // @TODO Determine if the heap is empty
-    return true;
+    if(_elems.size()==1){
+      return true;
+    }
+    else{
+      return false;
+    }
 }
 
 template <class T, class Compare>
