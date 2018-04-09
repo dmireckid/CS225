@@ -79,6 +79,9 @@ TEST_CASE("test_build_heap_2", "[weight=1]")
 	vector<int> expected1 = {1,7,2,9,8,5};
 	vector<int> expected2 = {1,2,5,8,7,9};
 	bool matches = (test == expected1) || (test == expected2);
+  for(size_t i=0; i<test.size(); i++){
+    cout<<test[i]<<endl;
+  }
 	REQUIRE(matches == true);
 }
 
@@ -103,6 +106,7 @@ TEST_CASE("test_build_heap_4", "[weight=1]")
 	vector<int> expected1 = {6,14,16,18,35,62,23,37,70,71,36,76,100,47,90,40,56};
 	vector<int> expected2 = {6,14,16,18,35,23,37,47,71,100,62,36,40,90,56,70,76};
 	bool matches = (test == expected1) || (test == expected2);
+
 	REQUIRE(matches == true);
 }
 
@@ -118,5 +122,8 @@ TEST_CASE("test_build_heap_5", "[weight=1]")
 	vector<int> expected1 = {4,7,6,16,10,7,9,30,25,24,19,22,21,15,28,52,39,48,54,48,44,24,28,56,37,62,71,45,64,35,73,55,67,66,74,83,82,79,78,53,92,76,97,29,46,78,89,84,68,74,49,82,83,99,93,74,45,88,69,46,41,85,86,62,84,71};
 	vector<int> expected2 = {4,7,6,7,10,9,15,16,24,19,22,37,21,28,41,29,25,48,48,44,24,46,28,49,64,55,45,45,35,67,62,52,39,30,83,78,79,54,53,92,76,97,84,89,78,68,56,62,74,83,82,99,71,93,74,46,88,69,74,73,85,86,84,82,71,66};
 	bool matches = (test == expected1) || (test == expected2);
+  for(size_t i=0; i<test.size(); i++){
+    cout<<test[i]<<endl;
+  }
 	REQUIRE(matches == true);
 }

@@ -52,7 +52,7 @@ size_t heap<T, Compare>::maxPriorityChild(size_t currentIdx) const
     ///   as defined by higherPriority()
     size_t left = leftChild(currentIdx);
     size_t right = rightChild(currentIdx);
-    if(currentIdx*2  < _elems.size()){
+    if(currentIdx*2+1  < _elems.size()){
       if(higherPriority(_elems[left], _elems[right])){
         return left;
       }
@@ -61,7 +61,7 @@ size_t heap<T, Compare>::maxPriorityChild(size_t currentIdx) const
       }
     }
     else{
-      return 0;
+      return currentIdx*2;
     }
 }
 
@@ -69,10 +69,10 @@ template <class T, class Compare>
 void heap<T, Compare>::heapifyDown(size_t currentIdx)
 {
     // @TODO Implement the heapifyDown algorithm.
-    if(hasAChild(currentIdx) == false){
-      return;
-    }
-    else{
+    if(hasAChild(currentIdx)){
+    //   return;
+    // }
+    // else{
       size_t child = maxPriorityChild(currentIdx);
       if(!higherPriority(_elems[currentIdx], _elems[child])){
         std::swap(_elems[currentIdx], _elems[child]);
@@ -120,11 +120,14 @@ T heap<T, Compare>::pop()
 {
     // @TODO Remove, and return, the element with highest priority
     //return T();
-    T temp = *(_elems.begin()+1);
-    _elems[1] = _elems[_elems.size()-1];
-    _elems.pop_back();
-    heapifyDown(1);
-    return temp;
+
+      T temp = _elems[1];
+      _elems[1] = _elems[_elems.size()-1];
+      _elems.pop_back();
+      heapifyDown(1);
+      return temp;
+
+    //return T();
 }
 
 template <class T, class Compare>
