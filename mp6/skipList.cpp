@@ -11,8 +11,8 @@
  * Uses two sentinel nodes, each initially of height 1
  */
 SkipList::SkipList() {
-    SkipNode* head_ = new SkipNode();
-    SkipNode* tail_ = new SkipNode();
+    /*SkipNode*/head_ = new SkipNode();
+    /*SkipNode*/tail_ = new SkipNode();
 
     head_->nodePointers[0].next = tail_;
     tail_->nodePointers[0].prev = head_;
@@ -60,6 +60,7 @@ void SkipList::insert(int key, HSLAPixel value) {
     // be updated to the new value.
     if (temp) {
         temp->value = value;
+        return;
     }
 
     length_++;
@@ -86,7 +87,7 @@ void SkipList::insert(int key, HSLAPixel value) {
         head_->nodePointers.push_back(SkipPointer());
         tail_->nodePointers.push_back(SkipPointer());
     }
-     
+
     this->listHeight_ = max(this->listHeight_, newNodeLevel);
 
     SkipNode * prev = traverse;
@@ -117,7 +118,7 @@ void SkipList::insert(int key, HSLAPixel value) {
             prev->nodePointers[backwardLevel].next = newNode;
             newNode->nodePointers[backwardLevel].prev = prev;
             backwardLevel++;
-        } if (prev->nodePointers.size() > (size_t)backwardLevel) {
+        } else if (prev->nodePointers.size() > (size_t)backwardLevel) {
             prev->nodePointers[backwardLevel].next = newNode;
             newNode->nodePointers[backwardLevel].prev = prev;
             backwardLevel++;
@@ -136,7 +137,7 @@ void SkipList::insert(int key, HSLAPixel value) {
 HSLAPixel SkipList::search(int key) {
     SkipNode * retval = find(key);
 
-    if (retval == NULL) {
+    if (retval /*== NULL*/) {
         return retval->value;
     }
 
@@ -181,18 +182,18 @@ SkipNode * SkipList::findRHelper(int key, int level, SkipNode * curr) {
     }
 
     int nextKey =  curr->nodePointers[level].next->key;
-    SkipNode* ret;
+    //SkipNode* ret;
 
     // Base Case:
     if (nextKey == key) {
-        ret = curr->nodePointers[level].next;
+        return curr->nodePointers[level].next;
     }
 
-    // Recusive Case:
+    // RecuRsive Case: you guys missed an R
     if (nextKey > key) {
-        ret = findRHelper(key, level, curr);
+        return findRHelper(key, level-1, curr);
     } else {
-        ret = findRHelper(key, level, curr->nodePointers[level].next);    
+        return findRHelper(key, level, curr->nodePointers[level].next);
     }
 
     return NULL;
@@ -205,7 +206,7 @@ SkipNode * SkipList::findRHelper(int key, int level, SkipNode * curr) {
  */
 SkipNode * SkipList::findI(int key) {
     SkipNode * traverse = head_;
-    SkipNode * retNode = NULL;
+    //SkipNode * retNode = NULL;
 
     int level = head_->nodePointers.size()-1;
 
@@ -213,7 +214,7 @@ SkipNode * SkipList::findI(int key) {
         int nextKey = traverse->nodePointers[level].next->key;
 
         if (nextKey == key) {
-            retNode = traverse->nodePointers[level].next;
+            return traverse->nodePointers[level].next;
         } else if (key < nextKey) {
             level--;
         } else {
@@ -269,11 +270,10 @@ vector<int> SkipList::traverse() {
     vector<int> ret;
     SkipNode * listPrintingTraverser = head_;
 
-    while (listPrintingTraverser != tail_) {
+    while (listPrintingTraverser /*!= tail_*/) {
         ret.push_back(listPrintingTraverser->key);
         listPrintingTraverser = listPrintingTraverser->nodePointers[0].next;
     }
 
     return ret;
 }
-
