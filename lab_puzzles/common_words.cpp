@@ -54,6 +54,7 @@ void CommonWords::init_file_word_maps(const vector<string>& filenames)
 void CommonWords::init_common()
 {
     /* Your code goes here! */
+    //ahhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 }
 
 /**
