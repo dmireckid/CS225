@@ -23,11 +23,11 @@ SkipList::SkipList() {
     tail_->key = INT_MAX;
     tail_->value = HSLAPixel();
 
-    int listHeight_ = 1;
-    int length_ = 0;
+    listHeight_ = 1;
+    length_ = 0;
 
-    int probability_ = 50;
-    int maxLevel_ = 14;  // log(128 * 128)
+    probability_ = 50;
+    maxLevel_ = 14;  // log(128 * 128)
 }
 
 /**
@@ -104,7 +104,7 @@ void SkipList::insert(int key, HSLAPixel value) {
             forward->nodePointers[forwardLevel].prev = newNode;
             newNode->nodePointers[forwardLevel].next = forward;
             forwardLevel++;
-        } if (forward->nodePointers.size() > (size_t)forwardLevel) {
+        } else if (forward->nodePointers.size() > (size_t)forwardLevel) {
             forward->nodePointers[forwardLevel].prev = newNode;
             newNode->nodePointers[forwardLevel].next = forward;
             forwardLevel++;
@@ -243,7 +243,7 @@ bool SkipList::remove(int key) {
 
     // can't remove a node that doesn't exist
     if(node == NULL) {
-        ret = false;
+        return false;
     }
 
     length_--;
@@ -267,10 +267,10 @@ bool SkipList::remove(int key) {
  * @return a vector containing the keys from head_ to tail_, including the sentinel values
  */
 vector<int> SkipList::traverse() {
-    vector<int> ret;
-    SkipNode * listPrintingTraverser = head_;
 
-    while (listPrintingTraverser /*!= tail_*/) {
+    SkipNode * listPrintingTraverser = head_;
+    vector<int> ret;
+    while (listPrintingTraverser != NULL/*!= tail_*/) {
         ret.push_back(listPrintingTraverser->key);
         listPrintingTraverser = listPrintingTraverser->nodePointers[0].next;
     }
