@@ -25,8 +25,51 @@
  */
 int GraphTools::findMinWeight(Graph& graph)
 {
-    //TODO: YOUR CODE HERE
-    return -1;
+    vector<Vertex> vertexes = graph.getVertices();
+    vector<Edge> edges = graph.getEdges();
+
+    for(size_t i=0; i<vertexes.size(); i++){
+      graph.setVertexLabel(vertexes[i], "UNEXPLORED");
+    }
+    for(size_t i=0; i<edges.size(); i++){
+      Vertex a = edges[i].source;
+      Vertex b = edges[i].dest;
+      graph.setEdgeLabel(a, b, "UNEXPLORED");
+    }
+
+    Vertex start = graph.getStartingVertex();
+    vector<Vertex> adj = graph.getAdjacent(start);
+    int minWeight = graph.getEdgeWeight(start, adj[0]);
+
+    queue<Vertex> que;
+    que.push(start);
+    graph.setVertexLabel(start, "VISITED");
+
+    Vertex min, min2;
+
+    while(!que.empty()){
+       Vertex temp = que.front();
+       vector<Vertex> adjac = graph.getAdjacent(temp);
+       que.pop();
+       for(size_t i=0; i<adjac.size(); i++){
+         if(graph.getVertexLabel(adjac[i]) == "UNEXPLORED"){
+           graph.setEdgeLabel(temp, adjac[i], "DISCOVERY");
+           graph.setVertexLabel(adjac[i], "VISITED");
+           que.push(adjac[i]);
+         }
+         else if(graph.getEdgeLabel(temp, adjac[i]) == "UNEXPLORED"){
+           graph.setEdgeLabel(temp, adjac[i], "CROSS");
+         }
+
+         if(graph.getEdgeWeight(temp, adjac[i]) <= minWeight){
+           minWeight = graph.getEdgeWeight(temp, adjac[i]);
+           min = temp;
+           min2 = adjac[i];
+         }
+       }
+    }
+    graph.setEdgeLabel(min, min2, "MIN");
+    return minWeight;
 }
 
 /**
@@ -74,4 +117,3 @@ void GraphTools::findMST(Graph& graph)
 {
     //TODO: YOUR CODE HERE
 }
-

@@ -48,7 +48,7 @@ namespace GraphTools
      * Does a BFS of a graph, keeping track of the minimum
      *  weight edge seen so far.
      */
-    Edge BFS(Graph& graph, Vertex start);
+    //Edge BFS(Graph& graph, Vertex start);
     /// @endcond
 }
 
