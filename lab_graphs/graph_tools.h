@@ -42,7 +42,6 @@ namespace GraphTools
     void findMST(Graph& graph);
 
     // define any helper functions here:
-
     /// @cond SOL
     /**
      * Does a BFS of a graph, keeping track of the minimum

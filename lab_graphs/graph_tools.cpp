@@ -6,6 +6,7 @@
  */
 
 #include "graph_tools.h"
+#include "edge.h"
 
 /**
  * Finds the minimum edge weight in the Graph graph.
@@ -96,8 +97,53 @@ int GraphTools::findMinWeight(Graph& graph)
 int GraphTools::findShortestPath(Graph& graph, Vertex start, Vertex end)
 {
     //TODO: YOUR CODE HERE
+    vector<Vertex> vertexes = graph.getVertices();
+    vector<Edge> edges = graph.getEdges();
 
-    return -1;
+    for(size_t i=0; i<vertexes.size(); i++){
+      graph.setVertexLabel(vertexes[i], "UNEXPLORED");
+    }
+    for(size_t i=0; i<edges.size(); i++){
+      Vertex a = edges[i].source;
+      Vertex b = edges[i].dest;
+      graph.setEdgeLabel(a, b, "UNEXPLORED");
+    }
+    int path =0;
+    unordered_map<Vertex, Vertex> mapp;
+    queue<Vertex> que;
+    que.push(start);
+    graph.setVertexLabel(start, "VISITED");
+
+    // Vertex min, min2;
+    // return -1;
+    while(!que.empty()){
+       Vertex temp = que.front();
+       vector<Vertex> adjac = graph.getAdjacent(temp);
+       que.pop();
+       for(size_t i=0; i<adjac.size(); i++){
+         if(graph.getVertexLabel(adjac[i]) == "UNEXPLORED"){
+           mapp[adjac[i]] = temp;
+           graph.setEdgeLabel(temp, adjac[i], "DISCOVERY");
+           graph.setVertexLabel(adjac[i], "VISITED");
+           que.push(adjac[i]);
+         }
+         else if(graph.getEdgeLabel(temp, adjac[i]) == "UNEXPLORED"){
+           graph.setEdgeLabel(temp, adjac[i], "CROSS");
+         }
+
+         // if(graph.getEdgeWeight(temp, adjac[i]) <= minWeight){
+         //   minWeight = graph.getEdgeWeight(temp, adjac[i]);
+         //   min = temp;
+         //   min2 = adjac[i];
+         // }
+       }
+    }
+    while(start != end){
+      graph.setEdgeLabel(end, mapp[end], "MINPATH");
+      end = mapp[end];
+      path++;
+    }
+    return path;
 }
 
 /**
@@ -113,7 +159,23 @@ int GraphTools::findShortestPath(Graph& graph, Vertex start, Vertex end)
  *  Kruskal's algorithm. Copy the files into the dsets.h and dsets.cpp .
  * @note You may call std::sort instead of creating a priority queue.
  */
+
 void GraphTools::findMST(Graph& graph)
 {
     //TODO: YOUR CODE HERE
+    // vector<Vertex> vertexes = graph.getVertices();
+    // vector<Edge> edges = graph.getEdges();
+    // int vert = vertexes.size(), ed = edges.size();
+    // DisjointSets dip;
+    // dip.addelements(vert);
+    // sort(edges.begin(), edges.end());
+    //
+    // for(size_t i=0; i<edges.size(); i++){
+    //   Vertex a = edges[i].source;
+    //   Vertex b = edges[i].dest;
+    //   if(dip.find(a) != dip.find(b)){
+    //     dip.setunion(a, b);
+    //     graph.setEdgeLabel(a, b, "MST");
+    //   }
+    // }
 }
