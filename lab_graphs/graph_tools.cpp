@@ -178,4 +178,32 @@ void GraphTools::findMST(Graph& graph)
     //     graph.setEdgeLabel(a, b, "MST");
     //   }
     // }
+    DisjointSets forest;
+    vector<Vertex> vertices = graph.getVertices();
+    unordered_map<Vertex, int> my_map;
+    forest.addelements(vertices.size());
+    for(unsigned long i=0; i < vertices.size(); i++){
+      my_map.insert(std::pair<Vertex, int>(vertices[i], i));
+    }
+
+    vector<Edge> my_edges = graph.getEdges();
+
+    //Implement Kruskal's algorithm
+    sort(my_edges.begin(), my_edges.end());
+    queue<Edge> q;
+    for(unsigned i =0; i < my_edges.size(); i++){
+      q.push(my_edges[i]);
+    }
+
+    while(!q.empty()){
+      Edge temp = q.front();
+      q.pop();
+      int a = forest.find(my_map[temp.source]);
+      int b = forest.find(my_map[temp.dest]);
+      if(a != b){
+        graph.setEdgeLabel(temp.source, temp.dest, "MST");
+        forest.setunion(a, b);
+
+      }
+    }
 }
