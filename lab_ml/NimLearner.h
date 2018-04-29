@@ -80,6 +80,8 @@ public:
 private:
   Graph g_;
   Vertex startingVertex_;
+  std::vector<std::string> p1n;
+  std::vector<std::string> p2n;
 };
 
 #endif

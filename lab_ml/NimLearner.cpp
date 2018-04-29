@@ -26,6 +26,44 @@
  */
 NimLearner::NimLearner(unsigned startingTokens) : g_(true, true) {
     /* Your code goes here! */
+    for(unsigned i=0; i<=startingTokens; i++){
+      string p1 = "p1-" + to_string(startingTokens-i);
+      g_.insertVertexByLabel(p1);
+      if(i==0){
+        startingVertex_ = g_.getVertexByLabel(p1);
+      }
+      p1n.push_back(g_.getVertexByLabel(p1));
+    }
+    for(unsigned i=0; i<=startingTokens; i++){
+      string p2 = "p2-" + to_string(startingTokens-i);
+      g_.insertVertexByLabel(p2);
+      if(i==0){
+        startingVertex_ = g_.getVertexByLabel(p2);
+      }
+      p2n.push_back(g_.getVertexByLabel(p2));
+    }
+
+    for(unsigned i=0; i<startingTokens-1; i++){
+      if(g_.insertEdge(p1n[i], p2n[i+1])){
+        g_.setEdgeWeight(p1n[i], p2n[i+1], 0);
+      }
+      if(g_.insertEdge(p1n[i], p2n[i+2])){
+        g_.setEdgeWeight(p1n[i], p2n[i+2], 0);
+      }
+    }
+    g_.insertEdge(p1n[p1n.size()-2], p2n[p2n.size()-1]);
+    g_.setEdgeWeight(p1n[p1n.size()-2], p2n[p2n.size()-1], 0);
+    for(unsigned i=0; i<startingTokens-1; i++){
+      if(g_.insertEdge(p2n[i], p1n[i+1])){
+        g_.setEdgeWeight(p2n[i], p1n[i+1], 0);
+      }
+      if(g_.insertEdge(p2n[i], p1n[i+2])){
+        g_.setEdgeWeight(p2n[i], p1n[i+2], 0);
+      }
+    }
+    g_.insertEdge(p2n[p2n.size()-2], p1n[p1n.size()-1]);
+    g_.setEdgeWeight(p2n[p2n.size()-2], p1n[p1n.size()-1], 0);
+
 }
 
 /**
