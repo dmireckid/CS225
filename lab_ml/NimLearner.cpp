@@ -78,6 +78,44 @@ NimLearner::NimLearner(unsigned startingTokens) : g_(true, true) {
 std::vector<Edge> NimLearner::playRandomGame() const {
   vector<Edge> path;
  /* Your code goes here! */
+  unsigned turn=0, index=0, random;
+  Edge edge;
+  while(true){
+    if(index >= p1n.size()-1 || index >= p2n.size()-1){
+      break;
+    }
+    else{
+      random = rand()%2 + 1;
+      if(turn%2 == 0){
+        if(index+random < p2n.size()){
+          edge = g_.getEdge(p1n[index], p2n[index+random]);
+          index = index+random;
+          path.push_back(edge);
+          turn++;
+        }
+        else{
+          edge = g_.getEdge(p1n[index], p2n[index+1]);
+          index = index+random;
+          path.push_back(edge);
+          turn++;
+        }
+      }
+      else{
+        if(index+random < p1n.size()){
+          edge = g_.getEdge(p2n[index], p1n[index+random]);
+          index = index+random;
+          path.push_back(edge);
+          turn++;
+        }
+        else{
+          edge = g_.getEdge(p2n[index], p1n[index+1]);
+          index = index+random;
+          path.push_back(edge);
+          turn++;
+        }
+      }
+    }
+  }
   return path;
 }
 
@@ -98,7 +136,31 @@ std::vector<Edge> NimLearner::playRandomGame() const {
  * @param path A path through the a game of Nim to learn.
  */
 void NimLearner::updateEdgeWeights(const std::vector<Edge> & path) {
- /* Your code goes here! */
+  int game = path.size()%2, temp;
+  if(game == 0){
+    for(size_t i=0; i<path.size(); i++){
+      if(i%2 == 0){
+        temp = g_.getEdgeWeight(path[i].source, path[i].dest);
+        g_.setEdgeWeight(path[i].source, path[i].dest, temp-1);
+      }
+      else{
+        temp = g_.getEdgeWeight(path[i].source, path[i].dest);
+        g_.setEdgeWeight(path[i].source, path[i].dest, temp+1);
+      }
+    }
+  }
+  else{
+    for(size_t i=0; i<path.size(); i++){
+      if(i%2 == 0){
+        temp = g_.getEdgeWeight(path[i].source, path[i].dest);
+        g_.setEdgeWeight(path[i].source, path[i].dest, temp+1);
+      }
+      else{
+        temp = g_.getEdgeWeight(path[i].source, path[i].dest);
+        g_.setEdgeWeight(path[i].source, path[i].dest, temp-1);
+      }
+    }
+  }
 }
 
 /**
