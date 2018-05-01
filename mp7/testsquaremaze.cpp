@@ -18,7 +18,7 @@ int main()
     m.makeMaze(50, 50);
     std::cout << "MakeMaze complete" << std::endl;
 
-    PNG* unsolved = m.drawMaze();
+    cs225::PNG* unsolved = m.drawMaze();
     unsolved->writeToFile("unsolved.png");
     delete unsolved;
     std::cout << "drawMaze complete" << std::endl;
@@ -26,7 +26,7 @@ int main()
     std::vector<int> sol = m.solveMaze();
     std::cout << "solveMaze complete" << std::endl;
 
-    PNG* solved = m.drawMazeWithSolution();
+    cs225::PNG* solved = m.drawMazeWithSolution();
     solved->writeToFile("solved.png");
     delete solved;
     std::cout << "drawMazeWithSolution complete" << std::endl;

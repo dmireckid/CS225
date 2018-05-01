@@ -1,4 +1,7 @@
 #include "maze.h"
+#include <queue>
+#include <map>
+#include <vector>
 
 SquareMaze::SquareMaze(){
   width_ = 0;
@@ -143,8 +146,64 @@ void SquareMaze::setWall(int x, int y, int dir, bool exists){
 }
 
 std::vector<int> SquareMaze::solveMaze(){
-  std::vector<int> v;
-  return v;
+  //TODO
+  map<int,int> parent;
+  queue<int> que;
+  vector<int> solution;
+  int entrance = 0;
+  que.push(entrance);
+  parent[entrance] = -1;
+  while(!que.empty()){
+    int temp = que.front();
+    que.pop();
+    for(int i=0; i<4; i++){
+      int x = temp%width_;
+      int y = temp/width_;
+      if(i==0){
+        x++;
+      }
+      else if(i==1){
+        y++;
+      }
+      else if(i==2){
+        x--;
+      }
+      else if(i==3){
+        y--;
+      }
+      int loc = y*width_ + x;
+      if(canTravel(temp%width_, temp/width_, i) && parent[temp]!=loc){
+        parent[loc] = temp;
+        que.push(loc);
+      }
+    }
+  }
+  for(int i=0; i<width_; i++){
+    int finish = (height_-1)*width_ + i;
+    vector<int> possible;
+    while(entrance != finish){
+      int temp2 = parent[finish];
+      if(finish-temp2 == 1){
+        possible.push_back(0);
+
+      }
+      if(finish-temp2 == -1){
+        possible.push_back(2);
+      }
+      if(finish-temp2 == width_){
+        possible.push_back(1);
+      }
+      if(finish-temp2 == -(width_)){
+        possible.push_back(3);
+      }
+      finish = temp2;
+    }
+    if(possible.size() > solution.size()){
+      solution = possible;
+    }
+  }
+  std::reverse(solution.begin(), solution.end());
+  return solution;
 }
 
 cs225::PNG* SquareMaze::drawMaze() const{
@@ -190,6 +249,58 @@ cs225::PNG* SquareMaze::drawMaze() const{
 }
 
 cs225::PNG* SquareMaze::drawMazeWithSolution(){
-  cs225::PNG* result = NULL;
-  return result;
+  cs225::PNG* solvedMaze = drawMaze();
+  vector<int> solution = solveMaze();
+  int y;
+  int x=y=5;
+  for(int i=0; i<(int)solution.size(); i++){
+    if(solution[i]==0){
+      for(int j=0; j<=10; j++){
+        cs225::HSLAPixel& pix = solvedMaze->getPixel(x+j, y);
+        pix.h=0;
+        pix.s=1;
+        pix.l=0.5;
+        pix.a=1;
+      }
+      x=x+10;
+    }
+    else if(solution[i]==1){
+      for(int j=0; j<=10; j++){
+        cs225::HSLAPixel& pix = solvedMaze->getPixel(x, y+j);
+        pix.h=0;
+        pix.s=1;
+        pix.l=0.5;
+        pix.a=1;
+      }
+      y=y+10;
+    }
+    else if(solution[i]==2){
+      for(int j=0; j<=10; j++){
+        cs225::HSLAPixel& pix = solvedMaze->getPixel(x-j, y);
+        pix.h=0;
+        pix.s=1;
+        pix.l=0.5;
+        pix.a=1;
+      }
+      x=x-10;
+    }
+    else if(solution[i]==3){
+      for(int j=0; j<=10; j++){
+        cs225::HSLAPixel& pix = solvedMaze->getPixel(x, y-j);
+        pix.h=0;
+        pix.s=1;
+        pix.l=0.5;
+        pix.a=1;
+      }
+      y=y-10;
+    }
+  }
+  for(int z=0; z<10; z++){
+    cs225::HSLAPixel& pix = solvedMaze->getPixel(x+z, height_*10);
+    pix.h=0;
+    pix.s=0;
+    pix.l=1;
+    pix.a=1;
+  }
+  return solvedMaze;
 }
