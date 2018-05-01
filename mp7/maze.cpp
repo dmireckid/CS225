@@ -148,8 +148,45 @@ std::vector<int> SquareMaze::solveMaze(){
 }
 
 cs225::PNG* SquareMaze::drawMaze() const{
-  cs225::PNG* result = NULL;
-  return result;
+  cs225::PNG* maze = new cs225::PNG(width_*10 +1, height_*10 +1);
+  for(unsigned int x=10; x<maze->width(); x++){
+    cs225::HSLAPixel& pix = maze->getPixel(x,0);
+    pix.h=0;
+    pix.s=0;
+    pix.l=0;
+    pix.a=1;
+  }
+  for(unsigned int y=0; y<maze->height(); y++){
+    cs225::HSLAPixel& pix = maze->getPixel(0,y);
+    pix.h=0;
+    pix.s=0;
+    pix.l=0;
+    pix.a=1;
+  }
+  for(int i=0; i<width_; i++){
+    for(int j=0; j<height_; j++){
+      int loc = width_*j + i;
+      if(rightWall[loc]){
+        for(int k=0; k<=10; k++){
+          cs225::HSLAPixel& pix = maze->getPixel((i+1)*10, j*10+k);
+          pix.h=0;
+          pix.s=0;
+          pix.l=0;
+          pix.a=1;
+        }
+      }
+      if(downWall[loc]){
+        for(int k=0; k<=10; k++){
+          cs225::HSLAPixel& pix = maze->getPixel(i*10+k, (j+1)*10);
+          pix.h=0;
+          pix.s=0;
+          pix.l=0;
+          pix.a=1;
+        }
+      }
+    }
+  }
+  return maze;
 }
 
 cs225::PNG* SquareMaze::drawMazeWithSolution(){
