@@ -41,12 +41,13 @@ void SquareMaze::makeMaze(int width, int height){
       }
     }
   }
-  int i, j, regular2, right2, down2;
+  int i;
   for(i=0; i<height_-1; i++){
+    int j;
     for(j=0; j<width_-1; j++){
-      regular2 = i*width_ + j;
-      right2 = i*width_ + j +1;
-      down2 = (i+1)*width_ + j;
+      int regular2 = i*width_ + j;
+      int right2 = i*width_ + j +1;
+      int down2 = (i+1)*width_ + j;
       if(dir){
         dir=false;
         if(rightWall[regular2] && maze_.find(regular2) != maze_.find(right2)){
@@ -71,12 +72,15 @@ void SquareMaze::makeMaze(int width, int height){
       }
     }
       //edge cases
+    int regular2 = i*width_ + j;
+    //int ight2 = i*width_ + j +1;
+    int down2 = (i+1)*width_ + j;
     if(downWall[regular2] && maze_.find(regular2) != maze_.find(down2)){
         downWall[regular2] = false;
         maze_.setunion(regular2, down2);
     }
   }
-  for(j=0; j<width_-1; j++){
+  for(int j=0; j<width_-1; j++){
       int regular2 = i*width_ + j;
       int right2 = i*width_ + j +1;
       int down2 = (i+1)*width_ + j;
@@ -88,11 +92,54 @@ void SquareMaze::makeMaze(int width, int height){
 }
 
 bool SquareMaze::canTravel(int x, int y, int dir) const{
-  return true;
+  if(dir==0 && x+1 < width_){
+    if(rightWall[width_*y +x] == false){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  if(dir==1 && y+1 < height_){
+    if(downWall[width_*y +x] == false){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  if(dir==2 && x > 0){
+    if(rightWall[width_*y +x -1] == false){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  if(dir==3 && y > 0){
+    if(downWall[width_*(y-1) +x] == false){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  return false;
 }
 
 void SquareMaze::setWall(int x, int y, int dir, bool exists){
-  return;
+  int loc = width_*y + x;
+  if(x>=0 && x<width_ && y>=0 && y<height_){
+    if(dir==0){
+      rightWall[loc] = exists;
+    }
+    if(dir==1){
+      downWall[loc] = exists;
+    }
+  }
+  else{
+    return;
+  }
 }
 
 std::vector<int> SquareMaze::solveMaze(){
