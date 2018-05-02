@@ -75,6 +75,7 @@ void SquareMaze::makeMaze(int width, int height){
       }
     }
       //edge cases
+    //std::cout << i << j << std::endl;
     int regular2 = i*width_ + j;
     //int ight2 = i*width_ + j +1;
     int down2 = (i+1)*width_ + j;
@@ -187,13 +188,13 @@ std::vector<int> SquareMaze::solveMaze(){
         possible.push_back(0);
 
       }
-      if(finish-temp2 == -1){
+      else if(finish-temp2 == -1){
         possible.push_back(2);
       }
-      if(finish-temp2 == width_){
+      else if(finish-temp2 == width_){
         possible.push_back(1);
       }
-      if(finish-temp2 == -(width_)){
+      else if(finish-temp2 == -(width_)){
         possible.push_back(3);
       }
       finish = temp2;
@@ -251,8 +252,8 @@ cs225::PNG* SquareMaze::drawMaze() const{
 cs225::PNG* SquareMaze::drawMazeWithSolution(){
   cs225::PNG* solvedMaze = drawMaze();
   vector<int> solution = solveMaze();
-  int y;
-  int x=y=5;
+  int y=5, x=5;
+  //int x=5;
   for(int i=0; i<(int)solution.size(); i++){
     if(solution[i]==0){
       for(int j=0; j<=10; j++){
@@ -284,7 +285,7 @@ cs225::PNG* SquareMaze::drawMazeWithSolution(){
       }
       x=x-10;
     }
-    else if(solution[i]==3){
+    else{//} if(solution[i]==3){
       for(int j=0; j<=10; j++){
         cs225::HSLAPixel& pix = solvedMaze->getPixel(x, y-j);
         pix.h=0;
@@ -295,8 +296,10 @@ cs225::PNG* SquareMaze::drawMazeWithSolution(){
       y=y-10;
     }
   }
-  for(int z=0; z<10; z++){
-    cs225::HSLAPixel& pix = solvedMaze->getPixel(x+z, height_*10);
+  x = x/10;
+  y = height_-1;
+  for(int z=1; z<=9; z++){
+    cs225::HSLAPixel& pix = solvedMaze->getPixel(x*10 + z, (y+1)*10);
     pix.h=0;
     pix.s=0;
     pix.l=1;
